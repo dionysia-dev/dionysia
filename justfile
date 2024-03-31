@@ -8,5 +8,8 @@ media-server:
 		-e MTX_WEBRTCADDITIONALHOSTS=192.168.x.x \
 		media-server
 
+api:
+	go run main.go api
+
 lint:
 	golangci-lint run -v ./...
