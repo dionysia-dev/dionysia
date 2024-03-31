@@ -516,7 +516,7 @@ pathDefaults:
   #   a regular expression.
   # * MTX_SOURCE_TYPE: source type
   # * MTX_SOURCE_ID: source ID
-  runOnReady: curl -X POST http://host.docker.internal:8080/ready
+  runOnReady: curl -XPOST http://host.docker.internal:8080/ready?source=$MTX_SOURCE_ID
   # Restart the command if it exits.
   runOnReadyRestart: no
   # Command to run when the stream is not available anymore.
