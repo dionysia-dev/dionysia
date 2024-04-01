@@ -1,5 +1,16 @@
 # Dev Log
 
+## 2024-03-31
+
+I've been trying mediamtx while working on the design of our API.
+
+This API will be used to manage the streams:
+
+* A user creates a new stream and receives a stream key (UUID);
+* This UUID will be used to push the stream to the server, for example rtmp://streaming-platform/UUID;
+* We can use *onReady* mediamtx event to POST our API a user has just started streaming;
+* And then we will enqueue a task do encode the stream and generate the ABR and HLS streams.
+
 ## 2024-03-29
 
 I've been thinking about the system design of the platform.
