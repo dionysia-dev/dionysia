@@ -11,5 +11,8 @@ media-server:
 api:
 	go run main.go api
 
+deps:
+	docker compose up
+
 lint:
 	golangci-lint run -v ./...

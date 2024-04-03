@@ -7,15 +7,24 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/learn-video/streaming-platform/internal/config"
+	"github.com/learn-video/streaming-platform/internal/db"
+	"github.com/learn-video/streaming-platform/internal/service"
 	"go.uber.org/fx"
+	"go.uber.org/zap"
 )
 
-func NewServer(lc fx.Lifecycle) *gin.Engine {
+func New(dbq *db.Queries, logger *zap.SugaredLogger) *gin.Engine {
+	inputController := NewInputController(service.NewInputHandler(dbq))
+
 	e := gin.Default()
+	e.POST("/inputs", inputController.CreateInput)
 
+	return e
+}
+
+func registerHooks(lc fx.Lifecycle, cfg *config.Config, e *gin.Engine) {
 	srv := &http.Server{Addr: ":8080", Handler: e}
-
-	addRoutes(e)
 
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
@@ -37,6 +46,4 @@ func NewServer(lc fx.Lifecycle) *gin.Engine {
 			return nil
 		},
 	})
-
-	return e
 }
