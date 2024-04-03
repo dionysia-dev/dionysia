@@ -1,5 +1,15 @@
 # Dev Log
 
+## 2024-04-03
+
+I've started working on the Management API code, which will be used to manage streams, check their status, monitor metrics, and more.
+
+Think of a stream as a TV channel. Users can ingest video using tools like OBS and then send it to a Media Server.
+
+Today, I've pushed some initial code and will continue to develop the documentation and the API itself.
+
+In the coming days, I'll write a notification system. This system will alert workers to pull a stream from the Media Server for encoding or transcoding. We'll leverage a queued messaging system to distribute these tasks across a cluster of machines.
+
 ## 2024-03-31
 
 I've been trying mediamtx while working on the design of our API.
