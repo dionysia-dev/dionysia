@@ -18,6 +18,8 @@ The platform can be used stream content to a server, which will then distribute 
 
 The platform is composed of several components:
 
+![System design](docs/static/architecture.png)
+
 * **Media Server**: The server that will receive the stream that will be pulled by a worker.
 * **Management API**: An API used to manage streams, check status, watch metrics, etc.
 * **Worker**: A worker that will pull the stream from the media server, encode and transcode the video to enable playback on various devices and under different network conditions, and distribute it to viewers through a CDN.
