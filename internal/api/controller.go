@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/learn-video/streaming-platform/internal/model"
 	"github.com/learn-video/streaming-platform/internal/service"
 )
@@ -30,4 +31,21 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusCreated, input)
+}
+
+func (c *InputController) GetInput(ctx *gin.Context) {
+	id := ctx.Param("id")
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID format"})
+		return
+	}
+
+	input, err := c.inputHandler.GetInput(ctx, uuid)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, input)
 }

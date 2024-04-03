@@ -19,6 +19,7 @@ func New(dbq *db.Queries, logger *zap.SugaredLogger) *gin.Engine {
 
 	e := gin.Default()
 	e.POST("/inputs", inputController.CreateInput)
+	e.GET("/inputs/:id", inputController.GetInput)
 
 	return e
 }

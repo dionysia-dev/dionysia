@@ -27,3 +27,14 @@ func (q *Queries) CreateInput(ctx context.Context, arg CreateInputParams) (Input
 	err := row.Scan(&i.ID, &i.Name, &i.Format)
 	return i, err
 }
+
+const getInput = `-- name: GetInput :one
+SELECT id, name, format FROM inputs WHERE id = $1
+`
+
+func (q *Queries) GetInput(ctx context.Context, id uuid.UUID) (Input, error) {
+	row := q.db.QueryRow(ctx, getInput, id)
+	var i Input
+	err := row.Scan(&i.ID, &i.Name, &i.Format)
+	return i, err
+}

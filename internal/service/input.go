@@ -10,6 +10,7 @@ import (
 
 type InputHandler interface {
 	CreateInput(context.Context, *model.Input) (model.Input, error)
+	GetInput(context.Context, uuid.UUID) (model.Input, error)
 }
 
 type inputHandler struct {
@@ -29,6 +30,19 @@ func (handler *inputHandler) CreateInput(ctx context.Context, in *model.Input) (
 		Format: in.Format,
 	})
 
+	if err != nil {
+		return model.Input{}, err
+	}
+
+	return model.Input{
+		ID:     input.ID,
+		Name:   input.Name,
+		Format: input.Format,
+	}, nil
+}
+
+func (handler *inputHandler) GetInput(ctx context.Context, id uuid.UUID) (model.Input, error) {
+	input, err := handler.store.GetInput(ctx, id)
 	if err != nil {
 		return model.Input{}, err
 	}
