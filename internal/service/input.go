@@ -8,19 +8,15 @@ import (
 	"github.com/learn-video/streaming-platform/internal/model"
 )
 
-type InputStore interface {
-	CreateInput(context.Context, db.CreateInputParams) (db.Input, error)
-}
-
 type InputHandler interface {
 	CreateInput(context.Context, *model.Input) (model.Input, error)
 }
 
 type inputHandler struct {
-	store InputStore
+	store db.InputStore
 }
 
-func NewInputHandler(store InputStore) InputHandler {
+func NewInputHandler(store db.InputStore) InputHandler {
 	return &inputHandler{
 		store: store,
 	}
