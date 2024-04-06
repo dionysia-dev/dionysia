@@ -79,7 +79,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 		return
 	}
 
-	log.Printf("Task enqueued: %s", info.ID, info.Queue)
+	log.Printf("Task enqueued: %s %s\n", info.ID, info.Queue)
 
 	ctx.Status(http.StatusCreated)
 }
