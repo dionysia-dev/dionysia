@@ -34,7 +34,7 @@ func (h *notificationHandler) PackageStream(id uuid.UUID) error {
 		return err
 	}
 
-	log.Printf("Task enqueued: %s %s\n", info.ID, info.Queue)
+	log.Printf("Package Stream enqueued: %s %s\n", info.ID, info.Queue)
 
 	return nil
 }
