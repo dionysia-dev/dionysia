@@ -1,22 +1,21 @@
 package api
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/learn-video/streaming-platform/internal/model"
-	"github.com/learn-video/streaming-platform/internal/queue"
 	"github.com/learn-video/streaming-platform/internal/service"
-	"github.com/learn-video/streaming-platform/internal/task"
 )
 
 type InputController struct {
 	inputHandler service.InputHandler
 }
 
-type NotificationController struct{}
+type NotificationController struct {
+	notificationHandler service.NotificationHandler
+}
 
 func NewInputController(inputHandler service.InputHandler) *InputController {
 	return &InputController{inputHandler: inputHandler}
@@ -55,8 +54,10 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, input)
 }
 
-func NewNotificationController() *NotificationController {
-	return &NotificationController{}
+func NewNotificationController(nh service.NotificationHandler) *NotificationController {
+	return &NotificationController{
+		notificationHandler: nh,
+	}
 }
 
 func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
@@ -66,20 +67,10 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 		return
 	}
 
-	client := queue.NewClient("localhost:6379")
-
-	task, err := task.NewPackageTask(id)
-	if err != nil {
+	if err := n.notificationHandler.PackageStream(id); err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		return
 	}
-	info, err := client.Enqueue(task)
-	if err != nil {
-		ctx.Status(http.StatusInternalServerError)
-		return
-	}
-
-	log.Printf("Task enqueued: %s %s\n", info.ID, info.Queue)
 
 	ctx.Status(http.StatusCreated)
 }

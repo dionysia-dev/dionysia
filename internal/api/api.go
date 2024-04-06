@@ -14,9 +14,9 @@ import (
 	"go.uber.org/zap"
 )
 
-func New(dbq *db.Queries, logger *zap.SugaredLogger) *gin.Engine {
+func New(dbq *db.Queries, logger *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
 	inputController := NewInputController(service.NewInputHandler(dbq))
-	notificationController := NewNotificationController()
+	notificationController := NewNotificationController(nh)
 
 	e := gin.Default()
 	e.POST("/inputs", inputController.CreateInput)
