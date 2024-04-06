@@ -16,6 +16,7 @@ func NewRootCmd() *cobra.Command {
 	}
 
 	root.AddCommand(NewAPICmd())
+	root.AddCommand(NewWorker())
 
 	return root
 }

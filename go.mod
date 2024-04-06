@@ -8,6 +8,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/hibiken/asynq v0.24.1
 	github.com/jackc/pgx/v5 v5.5.5
+	github.com/joho/godotenv v1.5.1
 	github.com/spf13/cobra v1.8.0
 	go.uber.org/fx v1.21.0
 	go.uber.org/zap v1.26.0

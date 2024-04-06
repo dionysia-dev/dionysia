@@ -11,3 +11,7 @@ services:
       POSTGRES_USER: streaming-platform
       POSTGRES_PASSWORD: streaming-platform
       POSTGRES_DB: streaming-platform
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"

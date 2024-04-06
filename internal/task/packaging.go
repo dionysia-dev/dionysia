@@ -1,7 +1,10 @@
-package service
+package task
 
 import (
 	"context"
+	"fmt"
+	"log"
+
 	"encoding/json"
 
 	"github.com/google/uuid"
@@ -17,10 +20,6 @@ type StreamPayload struct {
 	Address string    `json:"address"`
 }
 
-type Notifier interface {
-	PackageStream(context.Context)
-}
-
 func NewPackageTask(uuid uuid.UUID) (*asynq.Task, error) {
 	payload, err := json.Marshal(StreamPayload{ID: uuid, Address: "rtmp://localhost:1935"})
 	if err != nil {
@@ -28,4 +27,15 @@ func NewPackageTask(uuid uuid.UUID) (*asynq.Task, error) {
 	}
 
 	return asynq.NewTask(TypeStreamPackage, payload), nil
+}
+
+func HandleStreamPackageTask(ctx context.Context, t *asynq.Task) error {
+	var p StreamPayload
+	if err := json.Unmarshal(t.Payload(), &p); err != nil {
+		return fmt.Errorf("failed to unmarshal json: %v: %w", err, asynq.SkipRetry)
+	}
+
+	log.Printf("Packaging stream %s", p.ID.String())
+
+	return nil
 }

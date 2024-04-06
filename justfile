@@ -11,6 +11,9 @@ media-server:
 api:
 	go run main.go api
 
+worker:
+	go run main.go worker
+
 deps:
 	docker compose up
 

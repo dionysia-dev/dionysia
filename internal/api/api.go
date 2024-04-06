@@ -16,10 +16,12 @@ import (
 
 func New(dbq *db.Queries, logger *zap.SugaredLogger) *gin.Engine {
 	inputController := NewInputController(service.NewInputHandler(dbq))
+	notificationController := NewNotificationController()
 
 	e := gin.Default()
 	e.POST("/inputs", inputController.CreateInput)
 	e.GET("/inputs/:id", inputController.GetInput)
+	e.POST("/notifications/package", notificationController.EnqueuePackaging)
 
 	return e
 }
