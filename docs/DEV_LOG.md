@@ -1,5 +1,21 @@
 # Dev Log
 
+## 2024-04-06
+
+The last few days have been more intense. I've been working on the Management API and the notification system. Both are part of the transcoding/packaging module which is very important for the platform.
+
+If you are reading this dev log and want to know more about encoding/transcoding, [read this article](https://ottverse.com/what-is-video-encoding-transcoding-codecs-compression/)
+
+---
+
+I've started the API using [Gin](https://github.com/gin-gonic/gin) to handle the HTTP API, and [asynq](https://github.com/hibiken/asynq) to handle job processing.
+
+Creating an input stream is required to have a publishing point, an endpoint you can push your stream to. This is done by configuring your streaming software to push the stream to the endpoint with the stream ID. This same ID will be used to consume the stream using HLS.
+
+The currrent notification API is used by the media server. When a stream goes from "Idle" state to "Publishing" it sends a notification to the API which then enqueues a job to pull the stream from the media server and start the packaging process.
+
+*I don't like this "packaging" name for the feature, but I couldn't find a better name for it*
+
 ## 2024-04-03
 
 I've started working on the Management API code, which will be used to manage streams, check their status, monitor metrics, and more.
