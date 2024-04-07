@@ -17,5 +17,8 @@ worker:
 deps:
 	docker compose up
 
+test:
+	go test -v ./...
+
 lint:
 	golangci-lint run -v ./...
