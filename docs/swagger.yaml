@@ -1,0 +1,30 @@
+definitions:
+  model.Input:
+    properties:
+      format:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    required:
+    - format
+    - name
+    type: object
+info:
+  contact: {}
+paths:
+  /inputs:
+    post:
+      consumes:
+      - application/json
+      description: Create an input ready to be ingested
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Input'
+      summary: Create an input
+swagger: "2.0"

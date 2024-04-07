@@ -8,9 +8,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/learn-video/streaming-platform/docs"
 	"github.com/learn-video/streaming-platform/internal/config"
 	"github.com/learn-video/streaming-platform/internal/db"
 	"github.com/learn-video/streaming-platform/internal/service"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/fx"
 	"go.uber.org/zap"
 )
@@ -20,10 +23,18 @@ func New(dbq *db.Queries, _ *zap.SugaredLogger, nh service.NotificationHandler) 
 	notificationController := NewNotificationController(nh)
 
 	e := gin.Default()
-	e.POST("/inputs", inputController.CreateInput)
-	e.GET("/inputs/:id", inputController.GetInput)
-	e.DELETE("/inputs/:id", inputController.DeleteInput)
-	e.POST("/notifications/package", notificationController.EnqueuePackaging)
+
+	docs.SwaggerInfo.BasePath = "/api/v1"
+
+	v1 := e.Group("/api/v1")
+	{
+		v1.POST("/inputs", inputController.CreateInput)
+		v1.GET("/inputs/:id", inputController.GetInput)
+		v1.DELETE("/inputs/:id", inputController.DeleteInput)
+		v1.POST("/notifications/package", notificationController.EnqueuePackaging)
+	}
+
+	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return e
 }

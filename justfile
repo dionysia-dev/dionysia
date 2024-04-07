@@ -22,3 +22,6 @@ test:
 
 lint:
 	golangci-lint run -v ./...
+
+docs:
+	swag init -g internal/api/api.go -o docs

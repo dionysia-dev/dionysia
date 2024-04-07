@@ -21,6 +21,12 @@ func NewInputController(inputHandler service.InputHandler) *InputController {
 	return &InputController{inputHandler: inputHandler}
 }
 
+// @Summary Create an input
+// @Description Create an input ready to be ingested
+// @Accept json
+// @Produce json
+// @Success 201 {object} model.Input
+// @Router /inputs [post]
 func (c *InputController) CreateInput(ctx *gin.Context) {
 	var inputData model.Input
 	if err := ctx.BindJSON(&inputData); err != nil {
