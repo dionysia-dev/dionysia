@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 
@@ -14,7 +15,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func New(dbq *db.Queries, logger *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
+func New(dbq *db.Queries, _ *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
 	inputController := NewInputController(service.NewInputHandler(dbq))
 	notificationController := NewNotificationController(nh)
 
@@ -28,7 +29,11 @@ func New(dbq *db.Queries, logger *zap.SugaredLogger, nh service.NotificationHand
 }
 
 func registerHooks(lc fx.Lifecycle, cfg *config.Config, e *gin.Engine) {
-	srv := &http.Server{Addr: ":8080", Handler: e}
+	srv := &http.Server{
+		Addr:              ":" + cfg.APIPort,
+		Handler:           e,
+		ReadHeaderTimeout: cfg.ReadHeaderTimeout,
+	}
 
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
@@ -38,15 +43,20 @@ func registerHooks(lc fx.Lifecycle, cfg *config.Config, e *gin.Engine) {
 				return err
 			}
 
-			go srv.Serve(ln)
+			go srv.Serve(ln) //nolint:errcheck // error is handled by shutdown
 
 			fmt.Printf("Server started at: %s", srv.Addr)
 
 			return nil
 		},
 		OnStop: func(ctx context.Context) error {
-			srv.Shutdown(ctx)
+			if err := srv.Shutdown(ctx); err != nil {
+				log.Printf("Failed to shutdown server: %v", err)
+				return err
+			}
+
 			fmt.Println("Server stopped")
+
 			return nil
 		},
 	})

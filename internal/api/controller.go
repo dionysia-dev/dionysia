@@ -38,14 +38,13 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 }
 
 func (c *InputController) GetInput(ctx *gin.Context) {
-	id := ctx.Param("id")
-	uuid, err := uuid.Parse(id)
+	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID format"})
 		return
 	}
 
-	input, err := c.inputHandler.GetInput(ctx, uuid)
+	input, err := c.inputHandler.GetInput(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -55,14 +54,13 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 }
 
 func (c *InputController) DeleteInput(ctx *gin.Context) {
-	id := ctx.Param("id")
-	uuid, err := uuid.Parse(id)
+	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID format"})
 		return
 	}
 
-	if err := c.inputHandler.DeleteInput(ctx, uuid); err != nil {
+	if err := c.inputHandler.DeleteInput(ctx, id); err != nil {
 		ctx.Status(http.StatusInternalServerError)
 		return
 	}

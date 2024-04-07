@@ -18,7 +18,7 @@ func NewAPICmd() *cobra.Command {
 	return &cobra.Command{
 		Use:   "api",
 		Short: "Run API server",
-		Run: func(cmd *cobra.Command, args []string) {
+		Run: func(*cobra.Command, []string) {
 			if err := godotenv.Load(".env"); err != nil {
 				log.Println("Could not load env file")
 			}

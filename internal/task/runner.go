@@ -5,13 +5,12 @@ import (
 	"log"
 
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/streaming-platform/internal/config"
 	"go.uber.org/fx"
 )
 
-func Run(lc fx.Lifecycle, cfg *config.Config, srv *asynq.Server) {
+func Run(lc fx.Lifecycle, srv *asynq.Server) {
 	lc.Append(fx.Hook{
-		OnStart: func(ctx context.Context) error {
+		OnStart: func(context.Context) error {
 			mux := asynq.NewServeMux()
 			mux.HandleFunc(TypeStreamPackage, HandleStreamPackageTask)
 
@@ -23,7 +22,7 @@ func Run(lc fx.Lifecycle, cfg *config.Config, srv *asynq.Server) {
 
 			return nil
 		},
-		OnStop: func(ctx context.Context) error {
+		OnStop: func(context.Context) error {
 			srv.Shutdown()
 			return nil
 		},

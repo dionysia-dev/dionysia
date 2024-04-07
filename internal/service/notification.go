@@ -27,7 +27,6 @@ func (h *notificationHandler) PackageStream(id uuid.UUID) error {
 	if err != nil {
 		return err
 	}
-	h.client.Enqueue(t)
 
 	info, err := h.client.Enqueue(t)
 	if err != nil {

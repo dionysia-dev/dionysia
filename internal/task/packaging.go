@@ -20,8 +20,8 @@ type StreamPayload struct {
 	Address string    `json:"address"`
 }
 
-func NewPackageTask(uuid uuid.UUID) (*asynq.Task, error) {
-	payload, err := json.Marshal(StreamPayload{ID: uuid, Address: "rtmp://localhost:1935"})
+func NewPackageTask(id uuid.UUID) (*asynq.Task, error) {
+	payload, err := json.Marshal(StreamPayload{ID: id, Address: "rtmp://localhost:1935"})
 	if err != nil {
 		return nil, err
 	}
@@ -29,7 +29,7 @@ func NewPackageTask(uuid uuid.UUID) (*asynq.Task, error) {
 	return asynq.NewTask(TypeStreamPackage, payload), nil
 }
 
-func HandleStreamPackageTask(ctx context.Context, t *asynq.Task) error {
+func HandleStreamPackageTask(_ context.Context, t *asynq.Task) error {
 	var p StreamPayload
 	if err := json.Unmarshal(t.Payload(), &p); err != nil {
 		return fmt.Errorf("failed to unmarshal json: %v: %w", err, asynq.SkipRetry)
