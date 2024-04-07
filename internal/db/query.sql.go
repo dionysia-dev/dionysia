@@ -28,6 +28,15 @@ func (q *Queries) CreateInput(ctx context.Context, arg CreateInputParams) (Input
 	return i, err
 }
 
+const deleteInput = `-- name: DeleteInput :exec
+DELETE FROM inputs WHERE id = $1
+`
+
+func (q *Queries) DeleteInput(ctx context.Context, id uuid.UUID) error {
+	_, err := q.db.Exec(ctx, deleteInput, id)
+	return err
+}
+
 const getInput = `-- name: GetInput :one
 SELECT id, name, format FROM inputs WHERE id = $1
 `

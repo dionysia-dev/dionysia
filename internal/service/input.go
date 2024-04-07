@@ -11,6 +11,7 @@ import (
 type InputHandler interface {
 	CreateInput(context.Context, *model.Input) (model.Input, error)
 	GetInput(context.Context, uuid.UUID) (model.Input, error)
+	DeleteInput(context.Context, uuid.UUID) error
 }
 
 type inputHandler struct {
@@ -52,4 +53,8 @@ func (handler *inputHandler) GetInput(ctx context.Context, id uuid.UUID) (model.
 		Name:   input.Name,
 		Format: input.Format,
 	}, nil
+}
+
+func (handler *inputHandler) DeleteInput(ctx context.Context, id uuid.UUID) error {
+	return handler.store.DeleteInput(ctx, id)
 }

@@ -21,6 +21,7 @@ func New(dbq *db.Queries, logger *zap.SugaredLogger, nh service.NotificationHand
 	e := gin.Default()
 	e.POST("/inputs", inputController.CreateInput)
 	e.GET("/inputs/:id", inputController.GetInput)
+	e.DELETE("/inputs/:id", inputController.DeleteInput)
 	e.POST("/notifications/package", notificationController.EnqueuePackaging)
 
 	return e

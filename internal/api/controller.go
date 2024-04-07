@@ -54,6 +54,22 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, input)
 }
 
+func (c *InputController) DeleteInput(ctx *gin.Context) {
+	id := ctx.Param("id")
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid UUID format"})
+		return
+	}
+
+	if err := c.inputHandler.DeleteInput(ctx, uuid); err != nil {
+		ctx.Status(http.StatusInternalServerError)
+		return
+	}
+
+	ctx.Status(http.StatusNoContent)
+}
+
 func NewNotificationController(nh service.NotificationHandler) *NotificationController {
 	return &NotificationController{
 		notificationHandler: nh,
