@@ -1,4 +1,31 @@
 definitions:
+  api.Error:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/api.ErrorDetail'
+        type: array
+      message:
+        type: string
+    type: object
+  api.ErrorDetail:
+    properties:
+      message:
+        type: string
+      reason:
+        type: string
+    type: object
+  api.ErrorResponse:
+    properties:
+      error:
+        $ref: '#/definitions/api.Error'
+    type: object
+  api.SuccessResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
   model.Input:
     properties:
       format:
@@ -19,12 +46,101 @@ paths:
       consumes:
       - application/json
       description: Create an input ready to be ingested
+      parameters:
+      - description: Input data
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/model.Input'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/model.Input'
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Invalid input data
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
       summary: Create an input
+  /inputs/{id}:
+    delete:
+      description: Delete input by ID
+      parameters:
+      - description: Input ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Invalid UUID format
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Delete input
+    get:
+      description: Get input information by ID
+      parameters:
+      - description: Input ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Invalid UUID format
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Get input
+  /notifications/package:
+    post:
+      description: Enqueue packaging job using input URL, format and ID
+      parameters:
+      - description: Input ID
+        in: query
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/api.SuccessResponse'
+        "400":
+          description: Invalid UUID format
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/api.ErrorResponse'
+      summary: Enqueue packacing job
 swagger: "2.0"
