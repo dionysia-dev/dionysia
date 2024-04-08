@@ -1,3 +1,4 @@
+basePath: /api/v1
 definitions:
   api.Error:
     properties:
@@ -40,6 +41,9 @@ definitions:
     type: object
 info:
   contact: {}
+  description: Manage your streaming workflow
+  title: Streaming Platform API
+  version: "1.0"
 paths:
   /inputs:
     post:

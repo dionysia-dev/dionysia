@@ -18,6 +18,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title           Streaming Platform API
+// @version         1.0
+// @description     Manage your streaming workflow
+// @BasePath  /api/v1
+
 func New(dbq *db.Queries, _ *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
 	inputController := NewInputController(service.NewInputHandler(dbq))
 	notificationController := NewNotificationController(nh)
