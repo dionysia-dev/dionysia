@@ -32,12 +32,10 @@ func New(dbq *db.Queries, _ *zap.SugaredLogger, nh service.NotificationHandler) 
 	docs.SwaggerInfo.BasePath = "/api/v1"
 
 	v1 := e.Group("/api/v1")
-	{
-		v1.POST("/inputs", inputController.CreateInput)
-		v1.GET("/inputs/:id", inputController.GetInput)
-		v1.DELETE("/inputs/:id", inputController.DeleteInput)
-		v1.POST("/notifications/package", notificationController.EnqueuePackaging)
-	}
+	v1.POST("/inputs", inputController.CreateInput)
+	v1.GET("/inputs/:id", inputController.GetInput)
+	v1.DELETE("/inputs/:id", inputController.DeleteInput)
+	v1.POST("/notifications/package", notificationController.EnqueuePackaging)
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

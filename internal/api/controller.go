@@ -34,6 +34,7 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 	var inputData model.Input
 	if err := ctx.BindJSON(&inputData); err != nil {
 		handleValidationError(ctx, err)
+
 		return
 	}
 
@@ -44,6 +45,7 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 				Message: "Internal server error while creating input",
 			},
 		})
+
 		return
 	}
 
@@ -69,6 +71,7 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 				Message: "Invalid UUID format",
 			},
 		})
+
 		return
 	}
 
@@ -79,6 +82,7 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 				Message: "Internal server error while creating input",
 			},
 		})
+
 		return
 	}
 
@@ -103,6 +107,7 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 				Message: "Invalid UUID format",
 			},
 		})
+
 		return
 	}
 
@@ -112,6 +117,7 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 				Message: "Internal server error while deleting input",
 			},
 		})
+
 		return
 	}
 
@@ -142,6 +148,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 				Message: "Invalid UUID format",
 			},
 		})
+
 		return
 	}
 
@@ -151,6 +158,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 				Message: "Internal server error while creating input",
 			},
 		})
+
 		return
 	}
 

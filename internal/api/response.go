@@ -27,7 +27,12 @@ type ErrorResponse struct {
 }
 
 func handleValidationError(ctx *gin.Context, err error) {
-	var details []ErrorDetail
+	validationErrors, ok := err.(validator.ValidationErrors)
+	if !ok {
+		return
+	}
+
+	details := make([]ErrorDetail, 0, len(validationErrors))
 
 	for _, fieldErr := range err.(validator.ValidationErrors) {
 		details = append(details, ErrorDetail{
