@@ -7,14 +7,7 @@ media-server:
 		-e MTX_PROTOCOLS=tcp \
 		-e MTX_WEBRTCADDITIONALHOSTS=192.168.x.x \
 		media-server
-
-api:
-	go run main.go api
-
-worker:
-	go run main.go worker
-
-deps:
+run:
 	docker compose up
 
 test:

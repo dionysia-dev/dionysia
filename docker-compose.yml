@@ -12,6 +12,28 @@ services:
       POSTGRES_PASSWORD: streaming-platform
       POSTGRES_DB: streaming-platform
   redis:
+    container_name: redis
     image: redis:latest
     ports:
       - "6379:6379"
+  api:
+    container_name: api
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    command: api
+    env_file:
+      - .env
+  worker:
+    container_name: worker
+    build: .
+    restart: always
+    depends_on:
+      - redis
+    command: worker
+    env_file:
+      - .env
