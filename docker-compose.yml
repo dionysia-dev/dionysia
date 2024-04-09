@@ -16,6 +16,22 @@ services:
     image: redis:latest
     ports:
       - "6379:6379"
+  media-server:
+    container_name: media-server
+    build: media-server
+    restart: always
+    ports:
+      - "8554:8554"
+      - "1935:1935"
+      - "8888:8888"
+      - "8889:8889"
+      - "8890:8890/udp"
+      - "8189:8189/udp"
+    environment:
+      - MTX_PROTOCOLS=tcp
+      - MTX_WEBRTCADDITIONALHOSTS=192.168.x.x
+    volumes:
+      - ./media-server/mediamtx.yml:/mediamtx.yml
   api:
     container_name: api
     build: .

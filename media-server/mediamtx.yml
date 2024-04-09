@@ -516,7 +516,7 @@ pathDefaults:
   #   a regular expression.
   # * MTX_SOURCE_TYPE: source type
   # * MTX_SOURCE_ID: source ID
-  runOnReady: curl -XPOST http://host.docker.internal:8080/notifications/package?id=$MTX_PATH
+  runOnReady: curl -XPOST http://api:8080/api/v1/notifications/package?id=$MTX_PATH
   # Restart the command if it exits.
   runOnReadyRestart: no
   # Command to run when the stream is not available anymore.
