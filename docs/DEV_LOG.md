@@ -1,5 +1,15 @@
 # Dev Log
 
+## 2024-04-09
+
+I've been working on updating the docker-compose.yml file to make it easier for people to experiment with the platform.
+
+Next steps:
+* Add a transcoding profile so we can generate ABR streams depending on user choices (bitrate, resolution, fps, etc)
+* Add a simple frontend to manage streams
+
+One other thing I've been thinking is how to send the source media server while notifiying the API. We probably need some kind of service discovery to send a name we can use later. Kubernetes provides it out of the box with CoreDNS and other tools around the ecosystem.
+
 ## 2024-04-06
 
 The last few days have been more intense. I've been working on the Management API and the notification system. Both are part of the transcoding/packaging module which is very important for the platform.
