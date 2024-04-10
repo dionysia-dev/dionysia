@@ -34,3 +34,21 @@ The platform is built using the following technologies:
 * [mediamtx](https://github.com/bluenviron/mediamtx) for the media server
 * [gpac](https://gpac.io/) for the encoding, transcoding, and packaging
 * [asynq](https://github.com/hibiken/asynq) for distributing tasks to workers
+
+## Running
+
+All tasks are managed by a Justfile. You can see all the available tasks by running:
+
+```sh
+just -l
+```
+
+To run the platform, you need to have Docker and docker compose installed. Then, you can run the following command:
+
+```sh
+docker compose up
+```
+
+## Contributing
+
+Feel free to contribute to this project by opening issues or pull requests.
