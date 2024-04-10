@@ -21,7 +21,7 @@ type StreamPayload struct {
 }
 
 func NewPackageTask(id uuid.UUID) (*asynq.Task, error) {
-	payload, err := json.Marshal(StreamPayload{ID: id, Address: "rtmp://localhost:1935"})
+	payload, err := json.Marshal(StreamPayload{ID: id, Address: "rtmp://media-server:1935"})
 	if err != nil {
 		return nil, err
 	}
