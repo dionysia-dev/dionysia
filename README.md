@@ -25,3 +25,12 @@ The platform is composed of several components:
 * **Worker**: A worker that will pull the stream from the media server, encode and transcode the video to enable playback on various devices and under different network conditions, and distribute it to viewers through a CDN.
 * **Routing API**: An API used to route CDN requests to the right origins.
 * **CDN**: A CDN used to distribute the stream to viewers.
+
+## Tech Stack
+
+The platform is built using the following technologies:
+
+* [Go](https://go.dev/) for all the services and workers
+* [mediamtx](https://github.com/bluenviron/mediamtx) for the media server
+* [gpac](https://gpac.io/) for the encoding, transcoding, and packaging
+* [asynq](https://github.com/hibiken/asynq) for distributing tasks to workers
