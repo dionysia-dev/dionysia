@@ -3,7 +3,6 @@ package api
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -26,10 +25,13 @@ type ErrorResponse struct {
 	Error `json:"error"`
 }
 
-func handleValidationError(ctx *gin.Context, err error) {
+type StatusCode int
+
+// handleValidationError validate and handle errors of structs that has `validator/v10` rules
+func handleValidationError(err error) (StatusCode, *ErrorResponse) {
 	validationErrors, ok := err.(validator.ValidationErrors)
 	if !ok {
-		return
+		return 0, nil
 	}
 
 	details := make([]ErrorDetail, 0, len(validationErrors))
@@ -41,10 +43,10 @@ func handleValidationError(ctx *gin.Context, err error) {
 		})
 	}
 
-	ctx.JSON(http.StatusBadRequest, ErrorResponse{
+	return http.StatusBadRequest, &ErrorResponse{
 		Error: Error{
 			Message: "Invalid request parameters",
 			Details: details,
 		},
-	})
+	}
 }
