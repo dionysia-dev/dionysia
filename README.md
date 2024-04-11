@@ -35,7 +35,9 @@ The platform is built using the following technologies:
 * [gpac](https://gpac.io/) for the encoding, transcoding, and packaging
 * [asynq](https://github.com/hibiken/asynq) for distributing tasks to workers
 
-## Running
+## Development
+
+### Running
 
 All tasks are managed by a Justfile. You can see all the available tasks by running:
 
@@ -47,6 +49,20 @@ To run the platform, you need to have Docker and docker compose installed. Then,
 
 ```sh
 docker compose up
+```
+
+### Code Quality
+
+To run the test suite:
+
+```sh
+just test
+```
+
+To run code linting:
+
+```sh
+just lint
 ```
 
 ## Contributing
