@@ -40,10 +40,12 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 					Message: "InternalServerError: handle validation failed",
 				},
 			})
+
 			return
-		} 
+		}
 
 		ctx.JSON(int(statusCode), response)
+
 		return
 	}
 
