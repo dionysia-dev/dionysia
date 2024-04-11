@@ -33,7 +33,18 @@ func NewInputController(inputHandler service.InputHandler) *InputController {
 func (c *InputController) CreateInput(ctx *gin.Context) {
 	var inputData model.Input
 	if err := ctx.BindJSON(&inputData); err != nil {
-		handleValidationError(ctx, err)
+		statusCode, response := handleValidationError(err)
+		if statusCode == 0 && response == nil {
+			ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+				Error: Error{
+					Message: "InternalServerError: handle validation failed",
+				},
+			})
+
+			return
+		}
+
+		ctx.JSON(int(statusCode), response)
 
 		return
 	}
@@ -42,7 +53,7 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{
-				Message: "Internal server error while creating input",
+				Message: "InternalServerError: while creating input",
 			},
 		})
 
