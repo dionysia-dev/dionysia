@@ -15,35 +15,49 @@ var validate *validator.Validate
 func TestHandleValidationError(t *testing.T) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 
+	// Test cases
 	testCases := []struct {
-		input *model.Input
-		code  StatusCode
-		// I don't feel the need to validate the error message, at least of now
-		// In the case that this change, the logic of the validation would have to change too
-		e any
+		name               string
+		inputError         *model.Input
+		expectedStatusCode StatusCode
+		expectedErrorResp  *ErrorResponse
 	}{
 		{
-			input: &model.Input{
-				Name:   "alex",
-				Format: "format",
+			name: "Test with bad request body",
+			inputError: &model.Input{
+				Name: "just a name",
 			},
-			code: StatusCode(0),
-			e:    nil,
+			expectedStatusCode: http.StatusBadRequest,
+			expectedErrorResp: &ErrorResponse{
+				Error: Error{
+					Message: "Invalid request parameters",
+					Details: []ErrorDetail{
+						{
+							Reason:  "Format",
+							Message: "required",
+						},
+					},
+				},
+			},
 		},
 		{
-			input: &model.Input{
-				Format: "format",
+			name: "Test with valid request body",
+			inputError: &model.Input{
+				Name:   "beautiful name",
+				Format: "nice format",
 			},
-			code: StatusCode(http.StatusBadRequest),
-			e:    (*ErrorResponse)(nil),
+			expectedStatusCode: 0,
+			expectedErrorResp:  nil,
 		},
 	}
 
-	for _, tt := range testCases {
-		err := validate.Struct(tt.input)
-		code, response := handleValidationError(err)
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			err := validate.Struct(tc.inputError)
+			actualStatusCode, actualErrorResp := handleValidationError(err)
 
-		assert.Equal(t, tt.code, code)
-		assert.IsType(t, tt.e, response)
+			assert.Equal(t, tc.expectedStatusCode, actualStatusCode, "Status code mismatch")
+			assert.Equal(t, tc.expectedErrorResp, actualErrorResp, "Error response mismatch")
+		})
 	}
 }
