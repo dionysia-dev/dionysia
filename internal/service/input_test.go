@@ -7,10 +7,10 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/mock/gomock"
 
-	"github.com/learn-video/streaming-platform/internal/db"
-	"github.com/learn-video/streaming-platform/internal/mocks"
-	"github.com/learn-video/streaming-platform/internal/model"
-	"github.com/learn-video/streaming-platform/internal/service"
+	"github.com/learn-video/dionysia/internal/db"
+	"github.com/learn-video/dionysia/internal/mocks"
+	"github.com/learn-video/dionysia/internal/model"
+	"github.com/learn-video/dionysia/internal/service"
 	"github.com/stretchr/testify/assert"
 )
 

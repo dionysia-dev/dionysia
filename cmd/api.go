@@ -4,12 +4,12 @@ import (
 	"log"
 
 	"github.com/joho/godotenv"
-	"github.com/learn-video/streaming-platform/internal/api"
-	"github.com/learn-video/streaming-platform/internal/config"
-	"github.com/learn-video/streaming-platform/internal/db"
-	"github.com/learn-video/streaming-platform/internal/logging"
-	"github.com/learn-video/streaming-platform/internal/queue"
-	"github.com/learn-video/streaming-platform/internal/service"
+	"github.com/learn-video/dionysia/internal/api"
+	"github.com/learn-video/dionysia/internal/config"
+	"github.com/learn-video/dionysia/internal/db"
+	"github.com/learn-video/dionysia/internal/logging"
+	"github.com/learn-video/dionysia/internal/queue"
+	"github.com/learn-video/dionysia/internal/service"
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 )

@@ -1,4 +1,4 @@
-module github.com/learn-video/streaming-platform
+module github.com/learn-video/dionysia
 
 go 1.22.1
 

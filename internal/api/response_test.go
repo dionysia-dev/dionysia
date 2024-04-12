@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/learn-video/streaming-platform/internal/model"
+	"github.com/learn-video/dionysia/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

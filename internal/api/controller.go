@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/learn-video/streaming-platform/internal/model"
-	"github.com/learn-video/streaming-platform/internal/service"
+	"github.com/learn-video/dionysia/internal/model"
+	"github.com/learn-video/dionysia/internal/service"
 )
 
 type InputController struct {

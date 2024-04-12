@@ -1,4 +1,4 @@
-# Streaming Platform
+# Dionysia
 
 > A streaming platform based on open source software
 

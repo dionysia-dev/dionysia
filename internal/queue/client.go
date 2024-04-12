@@ -2,7 +2,7 @@ package queue
 
 import (
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/streaming-platform/internal/config"
+	"github.com/learn-video/dionysia/internal/config"
 )
 
 func NewClient(cfg *config.Config) *asynq.Client {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/streaming-platform/internal/task"
+	"github.com/learn-video/dionysia/internal/task"
 )
 
 type NotificationHandler interface {

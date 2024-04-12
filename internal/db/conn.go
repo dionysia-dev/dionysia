@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/learn-video/streaming-platform/internal/config"
+	"github.com/learn-video/dionysia/internal/config"
 )
 
 func NewPool(cfg *config.Config) (*pgxpool.Pool, error) {

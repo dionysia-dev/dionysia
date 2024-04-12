@@ -8,9 +8,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: streaming-platform
-      POSTGRES_PASSWORD: streaming-platform
-      POSTGRES_DB: streaming-platform
+      POSTGRES_USER: dionysia
+      POSTGRES_PASSWORD: dionysia
+      POSTGRES_DB: dionysia
   redis:
     container_name: redis
     image: redis:latest

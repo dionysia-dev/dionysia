@@ -13,7 +13,7 @@ import (
 	reflect "reflect"
 
 	uuid "github.com/google/uuid"
-	db "github.com/learn-video/streaming-platform/internal/db"
+	db "github.com/learn-video/dionysia/internal/db"
 	gomock "go.uber.org/mock/gomock"
 )
 

@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.com/learn-video/streaming-platform/internal/db"
-	"github.com/learn-video/streaming-platform/internal/model"
+	"github.com/learn-video/dionysia/internal/db"
+	"github.com/learn-video/dionysia/internal/model"
 )
 
 type InputHandler interface {
