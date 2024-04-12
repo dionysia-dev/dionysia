@@ -16,6 +16,7 @@ require (
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.3
 	go.uber.org/fx v1.21.0
+	go.uber.org/mock v0.4.0
 	go.uber.org/zap v1.26.0
 )
 
