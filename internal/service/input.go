@@ -86,10 +86,42 @@ func (handler *inputHandler) GetInput(ctx context.Context, id uuid.UUID) (model.
 		return model.Input{}, err
 	}
 
+	videoProfiles, err := handler.store.GetVideoProfiles(ctx, input.ID)
+	if err != nil {
+		return model.Input{}, err
+	}
+
+	audioProfiles, err := handler.store.GetAudioProfiles(ctx, input.ID)
+	if err != nil {
+		return model.Input{}, err
+	}
+
+	videos := make([]model.VideoProfile, 0, len(videoProfiles))
+	for _, v := range videoProfiles {
+		videos = append(videos, model.VideoProfile{
+			Width:          int(v.Width.Int32),
+			Height:         int(v.Height.Int32),
+			Codec:          v.Codec,
+			MaxKeyInterval: int(v.MaxKeyInterval.Int32),
+			Framerate:      int(v.Framerate.Int32),
+			Bitrate:        int(v.Bitrate.Int32),
+		})
+	}
+
+	audios := make([]model.AudioProfile, 0, len(audioProfiles))
+	for _, a := range audioProfiles {
+		audios = append(audios, model.AudioProfile{
+			Rate:  int(a.Rate.Int32),
+			Codec: a.Codec,
+		})
+	}
+
 	return model.Input{
 		ID:     input.ID,
 		Name:   input.Name,
 		Format: input.Format,
+		Video:  videos,
+		Audio:  audios,
 	}, nil
 }
 
