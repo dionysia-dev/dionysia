@@ -26,42 +26,48 @@ func NewInputHandler(store db.InputStore) InputHandler {
 }
 
 func (handler *inputHandler) CreateInput(ctx context.Context, in *model.Input) (model.Input, error) {
-	input, err := handler.store.CreateInput(ctx, db.CreateInputParams{
-		ID:     uuid.New(),
-		Name:   in.Name,
-		Format: in.Format,
+	var input db.Input
+
+	err := handler.store.ExecuteTransaction(ctx, func(txCtx context.Context) error {
+		var err error
+		input, err = handler.store.CreateInput(txCtx, db.CreateInputParams{
+			ID:     uuid.New(),
+			Name:   in.Name,
+			Format: in.Format,
+		})
+		if err != nil {
+			return err
+		}
+
+		for _, a := range in.Audio {
+			if err := handler.store.CreateAudioProfile(ctx, db.CreateAudioProfileParams{
+				InputID: input.ID,
+				Rate:    pgtype.Int4{Int32: int32(a.Rate), Valid: true},
+				Codec:   a.Codec,
+			}); err != nil {
+				return err
+			}
+		}
+
+		for _, v := range in.Video {
+			if err := handler.store.CreateVideoProfile(ctx, db.CreateVideoProfileParams{
+				InputID:        input.ID,
+				Width:          pgtype.Int4{Int32: int32(v.Width), Valid: true},
+				Height:         pgtype.Int4{Int32: int32(v.Height), Valid: true},
+				Codec:          v.Codec,
+				MaxKeyInterval: pgtype.Int4{Int32: int32(v.MaxKeyInterval), Valid: true},
+				Framerate:      pgtype.Int4{Int32: int32(v.Framerate), Valid: true},
+				Bitrate:        pgtype.Int4{Int32: int32(v.Bitrate), Valid: true},
+			}); err != nil {
+				return err
+			}
+		}
+
+		return nil
 	})
 
 	if err != nil {
 		return model.Input{}, err
-	}
-
-	for _, a := range in.Audio {
-		err := handler.store.CreateAudioProfile(ctx, db.CreateAudioProfileParams{
-			InputID: input.ID,
-			Rate:    pgtype.Int4{Int32: int32(a.Rate), Valid: true},
-			Codec:   a.Codec,
-		})
-
-		if err != nil {
-			return model.Input{}, err
-		}
-	}
-
-	for _, v := range in.Video {
-		err := handler.store.CreateVideoProfile(ctx, db.CreateVideoProfileParams{
-			InputID:        input.ID,
-			Width:          pgtype.Int4{Int32: int32(v.Width), Valid: true},
-			Height:         pgtype.Int4{Int32: int32(v.Height), Valid: true},
-			Codec:          v.Codec,
-			MaxKeyInterval: pgtype.Int4{Int32: int32(v.MaxKeyInterval), Valid: true},
-			Framerate:      pgtype.Int4{Int32: int32(v.Framerate), Valid: true},
-			Bitrate:        pgtype.Int4{Int32: int32(v.Bitrate), Valid: true},
-		})
-
-		if err != nil {
-			return model.Input{}, err
-		}
 	}
 
 	return model.Input{

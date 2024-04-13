@@ -12,4 +12,5 @@ type InputStore interface {
 	DeleteInput(context.Context, uuid.UUID) error
 	CreateAudioProfile(context.Context, CreateAudioProfileParams) error
 	CreateVideoProfile(context.Context, CreateVideoProfileParams) error
+	ExecuteTransaction(ctx context.Context, fn func(ctx context.Context) error) error
 }

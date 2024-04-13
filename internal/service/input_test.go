@@ -23,16 +23,22 @@ func TestCreateInput(t *testing.T) {
 
 	ctx := context.Background()
 	input := model.Input{Name: "big buck bunny", Format: "rtmp"}
-	expectedID := uuid.New()
 
-	mockStore.EXPECT().CreateInput(ctx, gomock.Any()).Return(db.Input{ID: expectedID, Name: "big buck bunny", Format: "rtmp"}, nil).Times(1)
+	mockStore.EXPECT().ExecuteTransaction(ctx, gomock.Any()).DoAndReturn(func(ctx context.Context, fn func(context.Context) error) error {
+		return fn(ctx)
+	}).Times(1)
+
+	mockStore.EXPECT().CreateInput(ctx, gomock.Any()).DoAndReturn(func(_ context.Context, params db.CreateInputParams) (db.Input, error) {
+		assert.Equal(t, "big buck bunny", params.Name)
+		assert.Equal(t, "rtmp", params.Format)
+		return db.Input(params), nil
+	}).Times(1)
 
 	result, err := handler.CreateInput(ctx, &input)
 
 	assert.NoError(t, err)
 	assert.Equal(t, "big buck bunny", result.Name)
 	assert.Equal(t, "rtmp", result.Format)
-	assert.Equal(t, expectedID, result.ID)
 }
 
 func TestGetInput(t *testing.T) {

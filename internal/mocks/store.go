@@ -97,6 +97,20 @@ func (mr *MockInputStoreMockRecorder) DeleteInput(arg0, arg1 any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteInput", reflect.TypeOf((*MockInputStore)(nil).DeleteInput), arg0, arg1)
 }
 
+// ExecuteTransaction mocks base method.
+func (m *MockInputStore) ExecuteTransaction(ctx context.Context, fn func(context.Context) error) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ExecuteTransaction", ctx, fn)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ExecuteTransaction indicates an expected call of ExecuteTransaction.
+func (mr *MockInputStoreMockRecorder) ExecuteTransaction(ctx, fn any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExecuteTransaction", reflect.TypeOf((*MockInputStore)(nil).ExecuteTransaction), ctx, fn)
+}
+
 // GetInput mocks base method.
 func (m *MockInputStore) GetInput(arg0 context.Context, arg1 uuid.UUID) (db.Input, error) {
 	m.ctrl.T.Helper()
