@@ -40,6 +40,20 @@ func (m *MockInputStore) EXPECT() *MockInputStoreMockRecorder {
 	return m.recorder
 }
 
+// CreateAudioProfile mocks base method.
+func (m *MockInputStore) CreateAudioProfile(arg0 context.Context, arg1 db.CreateAudioProfileParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateAudioProfile", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateAudioProfile indicates an expected call of CreateAudioProfile.
+func (mr *MockInputStoreMockRecorder) CreateAudioProfile(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAudioProfile", reflect.TypeOf((*MockInputStore)(nil).CreateAudioProfile), arg0, arg1)
+}
+
 // CreateInput mocks base method.
 func (m *MockInputStore) CreateInput(arg0 context.Context, arg1 db.CreateInputParams) (db.Input, error) {
 	m.ctrl.T.Helper()
@@ -53,6 +67,20 @@ func (m *MockInputStore) CreateInput(arg0 context.Context, arg1 db.CreateInputPa
 func (mr *MockInputStoreMockRecorder) CreateInput(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInput", reflect.TypeOf((*MockInputStore)(nil).CreateInput), arg0, arg1)
+}
+
+// CreateVideoProfile mocks base method.
+func (m *MockInputStore) CreateVideoProfile(arg0 context.Context, arg1 db.CreateVideoProfileParams) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CreateVideoProfile", arg0, arg1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CreateVideoProfile indicates an expected call of CreateVideoProfile.
+func (mr *MockInputStoreMockRecorder) CreateVideoProfile(arg0, arg1 any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVideoProfile", reflect.TypeOf((*MockInputStore)(nil).CreateVideoProfile), arg0, arg1)
 }
 
 // DeleteInput mocks base method.

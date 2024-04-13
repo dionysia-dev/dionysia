@@ -9,7 +9,24 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
+
+const createAudioProfile = `-- name: CreateAudioProfile :exec
+INSERT INTO audio_profiles (input_id, rate, codec)
+VALUES ($1, $2, $3)
+`
+
+type CreateAudioProfileParams struct {
+	InputID uuid.UUID
+	Rate    pgtype.Int4
+	Codec   string
+}
+
+func (q *Queries) CreateAudioProfile(ctx context.Context, arg CreateAudioProfileParams) error {
+	_, err := q.db.Exec(ctx, createAudioProfile, arg.InputID, arg.Rate, arg.Codec)
+	return err
+}
 
 const createInput = `-- name: CreateInput :one
 INSERT INTO inputs (id, name, format) VALUES ($1, $2, $3) RETURNING id, name, format
@@ -28,6 +45,43 @@ func (q *Queries) CreateInput(ctx context.Context, arg CreateInputParams) (Input
 	return i, err
 }
 
+const createVideoProfile = `-- name: CreateVideoProfile :exec
+INSERT INTO video_profiles (input_id, codec, bitrate, max_key_interval, framerate, width, height)
+VALUES ($1, $2, $3, $4, $5, $6, $7)
+`
+
+type CreateVideoProfileParams struct {
+	InputID        uuid.UUID
+	Codec          string
+	Bitrate        pgtype.Int4
+	MaxKeyInterval pgtype.Int4
+	Framerate      pgtype.Int4
+	Width          pgtype.Int4
+	Height         pgtype.Int4
+}
+
+func (q *Queries) CreateVideoProfile(ctx context.Context, arg CreateVideoProfileParams) error {
+	_, err := q.db.Exec(ctx, createVideoProfile,
+		arg.InputID,
+		arg.Codec,
+		arg.Bitrate,
+		arg.MaxKeyInterval,
+		arg.Framerate,
+		arg.Width,
+		arg.Height,
+	)
+	return err
+}
+
+const deleteAudioProfiles = `-- name: DeleteAudioProfiles :exec
+DELETE FROM audio_profiles WHERE input_id = $1
+`
+
+func (q *Queries) DeleteAudioProfiles(ctx context.Context, inputID uuid.UUID) error {
+	_, err := q.db.Exec(ctx, deleteAudioProfiles, inputID)
+	return err
+}
+
 const deleteInput = `-- name: DeleteInput :exec
 DELETE FROM inputs WHERE id = $1
 `
@@ -35,6 +89,44 @@ DELETE FROM inputs WHERE id = $1
 func (q *Queries) DeleteInput(ctx context.Context, id uuid.UUID) error {
 	_, err := q.db.Exec(ctx, deleteInput, id)
 	return err
+}
+
+const deleteVideoProfiles = `-- name: DeleteVideoProfiles :exec
+DELETE FROM video_profiles WHERE input_id = $1
+`
+
+func (q *Queries) DeleteVideoProfiles(ctx context.Context, inputID uuid.UUID) error {
+	_, err := q.db.Exec(ctx, deleteVideoProfiles, inputID)
+	return err
+}
+
+const getAudioProfiles = `-- name: GetAudioProfiles :many
+SELECT id, input_id, rate, codec FROM audio_profiles WHERE input_id = $1
+`
+
+func (q *Queries) GetAudioProfiles(ctx context.Context, inputID uuid.UUID) ([]AudioProfile, error) {
+	rows, err := q.db.Query(ctx, getAudioProfiles, inputID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []AudioProfile
+	for rows.Next() {
+		var i AudioProfile
+		if err := rows.Scan(
+			&i.ID,
+			&i.InputID,
+			&i.Rate,
+			&i.Codec,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const getInput = `-- name: GetInput :one
@@ -46,4 +138,37 @@ func (q *Queries) GetInput(ctx context.Context, id uuid.UUID) (Input, error) {
 	var i Input
 	err := row.Scan(&i.ID, &i.Name, &i.Format)
 	return i, err
+}
+
+const getVideoProfiles = `-- name: GetVideoProfiles :many
+SELECT id, input_id, codec, bitrate, max_key_interval, framerate, width, height FROM video_profiles WHERE input_id = $1
+`
+
+func (q *Queries) GetVideoProfiles(ctx context.Context, inputID uuid.UUID) ([]VideoProfile, error) {
+	rows, err := q.db.Query(ctx, getVideoProfiles, inputID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []VideoProfile
+	for rows.Next() {
+		var i VideoProfile
+		if err := rows.Scan(
+			&i.ID,
+			&i.InputID,
+			&i.Codec,
+			&i.Bitrate,
+			&i.MaxKeyInterval,
+			&i.Framerate,
+			&i.Width,
+			&i.Height,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }

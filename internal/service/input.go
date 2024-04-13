@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/learn-video/dionysia/internal/db"
 	"github.com/learn-video/dionysia/internal/model"
 )
@@ -33,6 +34,34 @@ func (handler *inputHandler) CreateInput(ctx context.Context, in *model.Input) (
 
 	if err != nil {
 		return model.Input{}, err
+	}
+
+	for _, a := range in.Audio {
+		err := handler.store.CreateAudioProfile(ctx, db.CreateAudioProfileParams{
+			InputID: input.ID,
+			Rate:    pgtype.Int4{Int32: int32(a.Rate), Valid: true},
+			Codec:   a.Codec,
+		})
+
+		if err != nil {
+			return model.Input{}, err
+		}
+	}
+
+	for _, v := range in.Video {
+		err := handler.store.CreateVideoProfile(ctx, db.CreateVideoProfileParams{
+			InputID:        input.ID,
+			Width:          pgtype.Int4{Int32: int32(v.Width), Valid: true},
+			Height:         pgtype.Int4{Int32: int32(v.Height), Valid: true},
+			Codec:          v.Codec,
+			MaxKeyInterval: pgtype.Int4{Int32: int32(v.MaxKeyInterval), Valid: true},
+			Framerate:      pgtype.Int4{Int32: int32(v.Framerate), Valid: true},
+			Bitrate:        pgtype.Int4{Int32: int32(v.Bitrate), Valid: true},
+		})
+
+		if err != nil {
+			return model.Input{}, err
+		}
 	}
 
 	return model.Input{

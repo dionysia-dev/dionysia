@@ -6,10 +6,29 @@ package db
 
 import (
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgtype"
 )
+
+type AudioProfile struct {
+	ID      int32
+	InputID uuid.UUID
+	Rate    pgtype.Int4
+	Codec   string
+}
 
 type Input struct {
 	ID     uuid.UUID
 	Name   string
 	Format string
+}
+
+type VideoProfile struct {
+	ID             int32
+	InputID        uuid.UUID
+	Codec          string
+	Bitrate        pgtype.Int4
+	MaxKeyInterval pgtype.Int4
+	Framerate      pgtype.Int4
+	Width          pgtype.Int4
+	Height         pgtype.Int4
 }
