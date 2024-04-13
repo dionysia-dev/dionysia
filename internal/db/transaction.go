@@ -11,7 +11,7 @@ func (q *Queries) ExecuteTransaction(ctx context.Context, fn func(ctx context.Co
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback(ctx)
+	defer tx.Rollback(ctx) //nolint:errcheck // return error regardless of rollback result
 
 	if err := fn(ctx); err != nil {
 		return err

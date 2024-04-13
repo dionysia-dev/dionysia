@@ -35,6 +35,7 @@ func (handler *inputHandler) CreateInput(ctx context.Context, in *model.Input) (
 			Name:   in.Name,
 			Format: in.Format,
 		})
+
 		if err != nil {
 			return err
 		}
