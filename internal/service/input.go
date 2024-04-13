@@ -74,6 +74,8 @@ func (handler *inputHandler) CreateInput(ctx context.Context, in *model.Input) (
 		ID:     input.ID,
 		Name:   input.Name,
 		Format: input.Format,
+		Audio:  in.Audio,
+		Video:  in.Video,
 	}, nil
 }
 
