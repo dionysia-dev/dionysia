@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/hibiken/asynq"
+	"github.com/learn-video/dionysia/internal/queue"
 	"github.com/learn-video/dionysia/internal/task"
 )
 
@@ -13,10 +13,10 @@ type NotificationHandler interface {
 }
 
 type notificationHandler struct {
-	client *asynq.Client
+	client queue.Client
 }
 
-func NewNotificationHandler(c *asynq.Client) NotificationHandler {
+func NewNotificationHandler(c queue.Client) NotificationHandler {
 	return &notificationHandler{
 		client: c,
 	}
