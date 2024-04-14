@@ -207,6 +207,20 @@
                 }
             }
         },
+        "model.AudioProfile": {
+            "type": "object",
+            "properties": {
+                "codec": {
+                    "type": "string"
+                },
+                "inputID": {
+                    "type": "string"
+                },
+                "rate": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.Input": {
             "type": "object",
             "required": [
@@ -214,14 +228,49 @@
                 "name"
             ],
             "properties": {
-                "format": {
-                    "type": "string"
+                "audio": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.AudioProfile"
+                    }
                 },
-                "id": {
+                "format": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string"
+                },
+                "video": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.VideoProfile"
+                    }
+                }
+            }
+        },
+        "model.VideoProfile": {
+            "type": "object",
+            "properties": {
+                "bitrate": {
+                    "type": "integer"
+                },
+                "codec": {
+                    "type": "string"
+                },
+                "framerate": {
+                    "type": "integer"
+                },
+                "height": {
+                    "type": "integer"
+                },
+                "inputID": {
+                    "type": "string"
+                },
+                "max_key_interval": {
+                    "type": "integer"
+                },
+                "width": {
+                    "type": "integer"
                 }
             }
         }

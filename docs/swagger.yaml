@@ -27,17 +27,49 @@ definitions:
       message:
         type: string
     type: object
+  model.AudioProfile:
+    properties:
+      codec:
+        type: string
+      inputID:
+        type: string
+      rate:
+        type: integer
+    type: object
   model.Input:
     properties:
+      audio:
+        items:
+          $ref: '#/definitions/model.AudioProfile'
+        type: array
       format:
-        type: string
-      id:
         type: string
       name:
         type: string
+      video:
+        items:
+          $ref: '#/definitions/model.VideoProfile'
+        type: array
     required:
     - format
     - name
+    type: object
+  model.VideoProfile:
+    properties:
+      bitrate:
+        type: integer
+      codec:
+        type: string
+      framerate:
+        type: integer
+      height:
+        type: integer
+      inputID:
+        type: string
+      max_key_interval:
+        type: integer
+      width:
+        type: integer
     type: object
 info:
   contact: {}

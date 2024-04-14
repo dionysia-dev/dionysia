@@ -2,12 +2,10 @@ package model
 
 import (
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 type Input struct {
-	gorm.Model
-	ID            uuid.UUID      `gorm:"primary_key;type:uuid"`
+	ID            uuid.UUID      `json:"id" swaggerignore:"true" gorm:"primary_key;type:uuid"`
 	Name          string         `json:"name" validate:"required"`
 	Format        string         `json:"format" validate:"required"`
 	AudioProfiles []AudioProfile `json:"audio" gorm:"foreignKey:InputID"`
@@ -15,14 +13,12 @@ type Input struct {
 }
 
 type AudioProfile struct {
-	gorm.Model
 	InputID uuid.UUID
 	Rate    int    `json:"rate"`
 	Codec   string `json:"codec"`
 }
 
 type VideoProfile struct {
-	gorm.Model
 	InputID        uuid.UUID
 	Codec          string `json:"codec"`
 	Bitrate        int    `json:"bitrate"`
