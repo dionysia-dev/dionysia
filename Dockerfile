@@ -8,8 +8,10 @@ RUN go mod download
 
 COPY . .
 
+ENV GOCACHE=/root/.cache/build
+
 # build app
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
+RUN --mount=type=cache,target="/root/.cache/build" CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 # gpac
 FROM gpac/ubuntu
