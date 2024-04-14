@@ -1,5 +1,15 @@
 # Dev Log
 
+## 2024-04-14
+
+I added a small roadmap with some features to the project. You can check it in the [README](../README.md) file.
+
+I worked the past days in the transcoding feature. A user can now choose video and audio profiles to generate ABR stream. The profiles are stored in the database and can be managed using the API.
+
+GPAC workers will do the job by receiving the profiles, generate the ABR streams, package them in HLS and store it locally until we decide how to distribute it (besides routing each stream using a routing API).
+
+That's it for now. I hope I get a working PoC in the next days.
+
 ## 2024-04-09
 
 I've been working on updating the docker-compose.yml file to make it easier for people to experiment with the platform.
