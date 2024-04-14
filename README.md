@@ -69,6 +69,13 @@ just lint
 
 Feel free to contribute to this project by opening issues or pull requests.
 
+## Roadmap
+
+- [ ] Video and audio transcoding (profiles)
+- [ ] Ingest authentication
+- [ ] Playback authentication
+- [ ] API authentication
+
 ## Why the name?
 
 > Dionysia is a festival in ancient Greece in honor of Dionysus, the god of wine, fertility, and theater. It was a time of celebration, where people would gather to watch plays, dance, and drink wine.
