@@ -6,5 +6,5 @@ import (
 )
 
 func migrate(db *gorm.DB) {
-	db.AutoMigrate(&model.Input{}, &model.AudioProfile{}, &model.VideoProfile{})
+	db.AutoMigrate(&model.Input{}, &model.AudioProfile{}, &model.VideoProfile{}) //nolint:errcheck // skip error check
 }

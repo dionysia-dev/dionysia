@@ -27,6 +27,7 @@ func NewInputHandler(store db.InputStore) InputHandler {
 func (handler *inputHandler) CreateInput(ctx context.Context, in *model.Input) (model.Input, error) {
 	in.ID = uuid.New()
 	err := handler.store.CreateInput(ctx, in)
+
 	return *in, err
 }
 

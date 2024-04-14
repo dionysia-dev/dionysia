@@ -14,27 +14,27 @@ type InputStore interface {
 	DeleteInput(context.Context, uuid.UUID) error
 }
 
-type DBInputStore struct {
+type InputStoreDB struct {
 	DB *gorm.DB
 }
 
-func NewDBInputStore(db *gorm.DB) *DBInputStore {
-	return &DBInputStore{
+func NewDBInputStore(db *gorm.DB) *InputStoreDB {
+	return &InputStoreDB{
 		DB: db,
 	}
 }
 
-func (s *DBInputStore) CreateInput(ctx context.Context, input *model.Input) error {
+func (s *InputStoreDB) CreateInput(ctx context.Context, input *model.Input) error {
 	return s.DB.WithContext(ctx).Create(input).Error
 }
 
-func (s *DBInputStore) GetInput(ctx context.Context, id uuid.UUID) (model.Input, error) {
+func (s *InputStoreDB) GetInput(ctx context.Context, id uuid.UUID) (model.Input, error) {
 	var input model.Input
 	err := s.DB.WithContext(ctx).Preload("AudioProfiles").Preload("VideoProfiles").First(&input, "id = ?", id).Error
 
 	return input, err
 }
 
-func (s *DBInputStore) DeleteInput(ctx context.Context, id uuid.UUID) error {
+func (s *InputStoreDB) DeleteInput(ctx context.Context, id uuid.UUID) error {
 	return s.DB.WithContext(ctx).Delete(&model.Input{}, "id = ?", id).Error
 }

@@ -23,7 +23,7 @@ import (
 // @description     Manage your streaming workflow
 // @BasePath  /api/v1
 
-func New(inputStore *db.DBInputStore, _ *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
+func New(inputStore *db.InputStoreDB, _ *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
 	inputController := NewInputController(service.NewInputHandler(inputStore))
 	notificationController := NewNotificationController(nh)
 
