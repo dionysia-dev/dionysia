@@ -9,6 +9,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
+	"github.com/learn-video/dionysia/internal/model"
 )
 
 const (
@@ -16,12 +17,17 @@ const (
 )
 
 type StreamPayload struct {
-	ID      uuid.UUID `json:"id"`
-	Address string    `json:"address"`
+	ID      uuid.UUID   `json:"id"`
+	Input   model.Input `json:"input"`
+	Address string      `json:"address"`
 }
 
-func NewPackageTask(id uuid.UUID) (*asynq.Task, error) {
-	payload, err := json.Marshal(StreamPayload{ID: id, Address: "rtmp://media-server:1935"})
+func NewPackageTask(id uuid.UUID, input model.Input) (*asynq.Task, error) {
+	payload, err := json.Marshal(StreamPayload{
+		ID:      id,
+		Input:   input,
+		Address: "rtmp://media-server:1935",
+	})
 	if err != nil {
 		return nil, err
 	}

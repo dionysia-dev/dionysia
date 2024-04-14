@@ -163,7 +163,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 		return
 	}
 
-	if err := n.notificationHandler.PackageStream(id); err != nil {
+	if err := n.notificationHandler.PackageStream(ctx, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{
 				Message: "Internal server error while creating input",
