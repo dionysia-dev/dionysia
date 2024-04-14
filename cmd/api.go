@@ -24,12 +24,14 @@ func NewAPICmd() *cobra.Command {
 			}
 
 			app := fx.New(
-				fx.Provide(config.New),
-				fx.Provide(logging.New),
-				fx.Provide(db.NewPool),
-				fx.Provide(db.NewQuerier),
-				fx.Provide(queue.NewClient),
-				fx.Provide(service.NewNotificationHandler),
+				fx.Provide(
+					config.New,
+					logging.New,
+					db.New,
+					db.NewDBInputStore,
+					queue.NewClient,
+					service.NewNotificationHandler,
+				),
 				api.Module,
 			)
 

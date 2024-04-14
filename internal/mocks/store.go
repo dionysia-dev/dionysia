@@ -13,7 +13,7 @@ import (
 	reflect "reflect"
 
 	uuid "github.com/google/uuid"
-	db "github.com/learn-video/dionysia/internal/db"
+	model "github.com/learn-video/dionysia/internal/model"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -40,47 +40,18 @@ func (m *MockInputStore) EXPECT() *MockInputStoreMockRecorder {
 	return m.recorder
 }
 
-// CreateAudioProfile mocks base method.
-func (m *MockInputStore) CreateAudioProfile(arg0 context.Context, arg1 db.CreateAudioProfileParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateAudioProfile", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateAudioProfile indicates an expected call of CreateAudioProfile.
-func (mr *MockInputStoreMockRecorder) CreateAudioProfile(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateAudioProfile", reflect.TypeOf((*MockInputStore)(nil).CreateAudioProfile), arg0, arg1)
-}
-
 // CreateInput mocks base method.
-func (m *MockInputStore) CreateInput(arg0 context.Context, arg1 db.CreateInputParams) (db.Input, error) {
+func (m *MockInputStore) CreateInput(arg0 context.Context, arg1 *model.Input) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateInput", arg0, arg1)
-	ret0, _ := ret[0].(db.Input)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // CreateInput indicates an expected call of CreateInput.
 func (mr *MockInputStoreMockRecorder) CreateInput(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateInput", reflect.TypeOf((*MockInputStore)(nil).CreateInput), arg0, arg1)
-}
-
-// CreateVideoProfile mocks base method.
-func (m *MockInputStore) CreateVideoProfile(arg0 context.Context, arg1 db.CreateVideoProfileParams) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateVideoProfile", arg0, arg1)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// CreateVideoProfile indicates an expected call of CreateVideoProfile.
-func (mr *MockInputStoreMockRecorder) CreateVideoProfile(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateVideoProfile", reflect.TypeOf((*MockInputStore)(nil).CreateVideoProfile), arg0, arg1)
 }
 
 // DeleteInput mocks base method.
@@ -97,40 +68,11 @@ func (mr *MockInputStoreMockRecorder) DeleteInput(arg0, arg1 any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteInput", reflect.TypeOf((*MockInputStore)(nil).DeleteInput), arg0, arg1)
 }
 
-// ExecuteTransaction mocks base method.
-func (m *MockInputStore) ExecuteTransaction(ctx context.Context, fn func(context.Context) error) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ExecuteTransaction", ctx, fn)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// ExecuteTransaction indicates an expected call of ExecuteTransaction.
-func (mr *MockInputStoreMockRecorder) ExecuteTransaction(ctx, fn any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExecuteTransaction", reflect.TypeOf((*MockInputStore)(nil).ExecuteTransaction), ctx, fn)
-}
-
-// GetAudioProfiles mocks base method.
-func (m *MockInputStore) GetAudioProfiles(arg0 context.Context, arg1 uuid.UUID) ([]db.AudioProfile, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetAudioProfiles", arg0, arg1)
-	ret0, _ := ret[0].([]db.AudioProfile)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetAudioProfiles indicates an expected call of GetAudioProfiles.
-func (mr *MockInputStoreMockRecorder) GetAudioProfiles(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAudioProfiles", reflect.TypeOf((*MockInputStore)(nil).GetAudioProfiles), arg0, arg1)
-}
-
 // GetInput mocks base method.
-func (m *MockInputStore) GetInput(arg0 context.Context, arg1 uuid.UUID) (db.Input, error) {
+func (m *MockInputStore) GetInput(arg0 context.Context, arg1 uuid.UUID) (model.Input, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetInput", arg0, arg1)
-	ret0, _ := ret[0].(db.Input)
+	ret0, _ := ret[0].(model.Input)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -139,19 +81,4 @@ func (m *MockInputStore) GetInput(arg0 context.Context, arg1 uuid.UUID) (db.Inpu
 func (mr *MockInputStoreMockRecorder) GetInput(arg0, arg1 any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInput", reflect.TypeOf((*MockInputStore)(nil).GetInput), arg0, arg1)
-}
-
-// GetVideoProfiles mocks base method.
-func (m *MockInputStore) GetVideoProfiles(arg0 context.Context, arg1 uuid.UUID) ([]db.VideoProfile, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetVideoProfiles", arg0, arg1)
-	ret0, _ := ret[0].([]db.VideoProfile)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// GetVideoProfiles indicates an expected call of GetVideoProfiles.
-func (mr *MockInputStoreMockRecorder) GetVideoProfiles(arg0, arg1 any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVideoProfiles", reflect.TypeOf((*MockInputStore)(nil).GetVideoProfiles), arg0, arg1)
 }

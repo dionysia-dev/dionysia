@@ -1,27 +1,22 @@
 package db
 
 import (
-	"context"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/learn-video/dionysia/internal/config"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func NewPool(cfg *config.Config) (*pgxpool.Pool, error) {
-	ctx := context.Background()
+func New(cfg *config.Config) (*gorm.DB, error) {
+	conn, err := gorm.Open(postgres.New(postgres.Config{
+		DSN:                  cfg.DatabaseURL,
+		PreferSimpleProtocol: true, // disables implicit prepared statement usage
+	}), &gorm.Config{})
 
-	pool, err := pgxpool.New(ctx, cfg.DatabaseURL)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := pool.Ping(ctx); err != nil {
-		return nil, err
-	}
+	migrate(conn)
 
-	return pool, nil
-}
-
-func NewQuerier(pool *pgxpool.Pool) *Queries {
-	return New(pool)
+	return conn, nil
 }
