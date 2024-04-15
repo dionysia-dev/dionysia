@@ -8,7 +8,7 @@ stop:
 
 # run test suite
 test:
-	go test -v ./...
+	go test ./...
 
 # lint the code
 lint:

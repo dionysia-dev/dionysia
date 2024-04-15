@@ -43,7 +43,7 @@ func HandleStreamPackageTask(_ context.Context, t *asynq.Task) error {
 
 	log.Printf("Packaging stream %s", p.ID.String())
 
-	cmd := NewGPACCommand(p.ID.String(), p.Address, "/tmp")
+	cmd := NewGPACCommand(p.ID.String(), p.Address, "/tmp", p.Input)
 	if err := cmd.Execute(); err != nil {
 		log.Printf("Failed to execute command: %v", err)
 		return fmt.Errorf("failed to execute command: %v: %w", err, asynq.SkipRetry)
