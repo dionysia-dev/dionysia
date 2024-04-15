@@ -18,7 +18,7 @@ type InputStoreDB struct {
 	DB *gorm.DB
 }
 
-func NewDBInputStore(db *gorm.DB) *InputStoreDB {
+func NewDBInputStore(db *gorm.DB) InputStore {
 	return &InputStoreDB{
 		DB: db,
 	}
