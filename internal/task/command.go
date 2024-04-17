@@ -9,6 +9,46 @@ import (
 	"github.com/learn-video/dionysia/internal/model"
 )
 
+type CommandConfig struct {
+	DefaultVideoProfiles []model.VideoProfile
+	DefaultAudioProfiles []model.AudioProfile
+}
+
+func NewDefaultCommandConfig() *CommandConfig {
+	return &CommandConfig{
+		DefaultVideoProfiles: []model.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}},
+		DefaultAudioProfiles: []model.AudioProfile{{Rate: 128}},
+	}
+}
+
+type GPACCommandBuilder struct {
+	config *CommandConfig
+}
+
+func NewGPACCommandBuilder(config *CommandConfig) *GPACCommandBuilder {
+	return &GPACCommandBuilder{config: config}
+}
+
+func (b *GPACCommandBuilder) Build(id, address, output string, input model.Input) *GPACCommand {
+	if len(input.VideoProfiles) == 0 {
+		input.VideoProfiles = b.config.DefaultVideoProfiles
+	}
+	if len(input.AudioProfiles) == 0 {
+		input.AudioProfiles = b.config.DefaultAudioProfiles
+	}
+
+	return &GPACCommand{
+		ID:      id,
+		Address: address,
+		Output:  output,
+		Input:   input,
+		Runner: func(program string, args []string) error {
+			cmd := exec.Command(program, args...)
+			return cmd.Run()
+		},
+	}
+}
+
 type GPACCommand struct {
 	ID      string
 	Address string
@@ -22,11 +62,11 @@ func (g *GPACCommand) Execute() error {
 
 	for i, v := range g.Input.VideoProfiles {
 		bitrate := fmt.Sprintf("b=%dk", v.Bitrate)
+		profileFlag := "@@"
 		if i == 0 {
-			args = append(args, "@", bitrate)
-		} else {
-			args = append(args, "@@", bitrate)
+			profileFlag = "@"
 		}
+		args = append(args, profileFlag, bitrate)
 	}
 
 	for _, a := range g.Input.AudioProfiles {
