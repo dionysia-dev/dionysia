@@ -10,9 +10,10 @@ import (
 )
 
 const (
-	defaultVideoCodec = "avc"
-	defaultAudioCodec = "aac"
-	defaultFramerate  = 30
+	defaultVideoCodec      = "avc"
+	defaultAudioCodec      = "aac"
+	defaultFramerate       = 24
+	defaultSegmentDuration = 3
 )
 
 type CommandConfig struct {
@@ -22,12 +23,47 @@ type CommandConfig struct {
 
 func NewDefaultCommandConfig() *CommandConfig {
 	return &CommandConfig{
+		//nolint:gomnd // values are self explanatory
 		DefaultVideoProfiles: []model.VideoProfile{
-			{Codec: defaultVideoCodec, Bitrate: 1000}, //nolint:gomnd // Default video profiles
-			{Codec: defaultVideoCodec, Bitrate: 2000}, //nolint:gomnd // Default video profiles
+			{
+				Codec:          defaultVideoCodec,
+				Bitrate:        500,
+				MaxKeyInterval: defaultSegmentDuration * defaultFramerate,
+				Framerate:      defaultFramerate,
+				Width:          640,
+				Height:         360,
+			},
+			{
+				Codec:          defaultVideoCodec,
+				Bitrate:        800,
+				MaxKeyInterval: defaultSegmentDuration * defaultFramerate,
+				Framerate:      defaultFramerate,
+				Width:          842,
+				Height:         480,
+			},
+			{
+				Codec:          defaultVideoCodec,
+				Bitrate:        1200,
+				MaxKeyInterval: defaultSegmentDuration * defaultFramerate,
+				Framerate:      defaultFramerate,
+				Width:          1280,
+				Height:         720,
+			},
+			{
+				Codec:          defaultVideoCodec,
+				Bitrate:        2500,
+				MaxKeyInterval: defaultSegmentDuration * defaultFramerate,
+				Framerate:      defaultFramerate,
+				Width:          1920,
+				Height:         1080,
+			},
 		},
+		//nolint:gomnd // values are self explanatory
 		DefaultAudioProfiles: []model.AudioProfile{
-			{Codec: defaultAudioCodec, Rate: 128}, //nolint:gomnd // Default video profiles
+			{
+				Codec: defaultAudioCodec,
+				Rate:  128,
+			},
 		},
 	}
 }
