@@ -46,8 +46,10 @@ func HandleStreamPackageTask(_ context.Context, t *asynq.Task) error {
 	cfg := NewDefaultCommandConfig()
 	builder := NewGPACCommandBuilder(cfg)
 	cmd := builder.Build(p.ID.String(), p.Address, "/output", p.Input)
+
 	if err := cmd.Execute(); err != nil {
 		log.Printf("Failed to execute command: %v", err)
+
 		return fmt.Errorf("failed to execute command: %v: %w", err, asynq.SkipRetry)
 	}
 

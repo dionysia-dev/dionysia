@@ -16,8 +16,8 @@ type CommandConfig struct {
 
 func NewDefaultCommandConfig() *CommandConfig {
 	return &CommandConfig{
-		DefaultVideoProfiles: []model.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}},
-		DefaultAudioProfiles: []model.AudioProfile{{Rate: 128}},
+		DefaultVideoProfiles: []model.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}}, //nolint:gomnd // Default video profiles
+		DefaultAudioProfiles: []model.AudioProfile{{Rate: 128}},                      //nolint:gomnd // Default video profiles
 	}
 }
 
@@ -33,6 +33,7 @@ func (b *GPACCommandBuilder) Build(id, address, output string, input model.Input
 	if len(input.VideoProfiles) == 0 {
 		input.VideoProfiles = b.config.DefaultVideoProfiles
 	}
+
 	if len(input.AudioProfiles) == 0 {
 		input.AudioProfiles = b.config.DefaultAudioProfiles
 	}
@@ -63,9 +64,11 @@ func (g *GPACCommand) Execute() error {
 	for i, v := range g.Input.VideoProfiles {
 		bitrate := fmt.Sprintf("b=%dk", v.Bitrate)
 		profileFlag := "@@"
+
 		if i == 0 {
 			profileFlag = "@"
 		}
+
 		args = append(args, profileFlag, bitrate)
 	}
 
