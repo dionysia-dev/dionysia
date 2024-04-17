@@ -9,6 +9,12 @@ import (
 	"github.com/learn-video/dionysia/internal/model"
 )
 
+const (
+	defaultVideoCodec = "avc"
+	defaultAudioCodec = "aac"
+	defaultFramerate  = 30
+)
+
 type CommandConfig struct {
 	DefaultVideoProfiles []model.VideoProfile
 	DefaultAudioProfiles []model.AudioProfile
@@ -16,8 +22,13 @@ type CommandConfig struct {
 
 func NewDefaultCommandConfig() *CommandConfig {
 	return &CommandConfig{
-		DefaultVideoProfiles: []model.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}}, //nolint:gomnd // Default video profiles
-		DefaultAudioProfiles: []model.AudioProfile{{Rate: 128}},                      //nolint:gomnd // Default video profiles
+		DefaultVideoProfiles: []model.VideoProfile{
+			{Codec: defaultVideoCodec, Bitrate: 1000}, //nolint:gomnd // Default video profiles
+			{Codec: defaultVideoCodec, Bitrate: 2000}, //nolint:gomnd // Default video profiles
+		},
+		DefaultAudioProfiles: []model.AudioProfile{
+			{Codec: defaultAudioCodec, Rate: 128}, //nolint:gomnd // Default video profiles
+		},
 	}
 }
 
