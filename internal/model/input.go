@@ -27,3 +27,8 @@ type VideoProfile struct {
 	Width          int    `json:"width"`
 	Height         int    `json:"height"`
 }
+
+type IngestAuthData struct {
+	Path   uuid.UUID `json:"path" validate:"required"`
+	Action string    `json:"action" validate:"required"`
+}

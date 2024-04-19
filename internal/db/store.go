@@ -2,10 +2,15 @@ package db
 
 import (
 	"context"
+	"errors"
 
 	"github.com/google/uuid"
 	"github.com/learn-video/dionysia/internal/model"
 	"gorm.io/gorm"
+)
+
+var (
+	ErrNotFound = errors.New("record not found")
 )
 
 type InputStore interface {
@@ -31,6 +36,10 @@ func (s *InputStoreDB) CreateInput(ctx context.Context, input *model.Input) erro
 func (s *InputStoreDB) GetInput(ctx context.Context, id uuid.UUID) (model.Input, error) {
 	var input model.Input
 	err := s.DB.WithContext(ctx).Preload("AudioProfiles").Preload("VideoProfiles").First(&input, "id = ?", id).Error
+
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return model.Input{}, ErrNotFound
+	}
 
 	return input, err
 }

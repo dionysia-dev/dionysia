@@ -53,7 +53,7 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{
-				Message: "InternalServerError: while creating input",
+				Message: "InternalServerError: failed creating input",
 			},
 		})
 
@@ -79,7 +79,7 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse{
 			Error: Error{
-				Message: "Invalid UUID format",
+				Message: "BadRequest: invalid UUID format",
 			},
 		})
 
@@ -90,7 +90,7 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{
-				Message: "Internal server error while creating input",
+				Message: "InternalServerError: failed creating input",
 			},
 		})
 
@@ -115,7 +115,7 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse{
 			Error: Error{
-				Message: "Invalid UUID format",
+				Message: "BadRequest: invalid UUID format",
 			},
 		})
 
@@ -125,7 +125,7 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 	if err := c.inputHandler.DeleteInput(ctx, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{
-				Message: "Internal server error while deleting input",
+				Message: "InternalServerError: failed deleting input",
 			},
 		})
 
@@ -134,6 +134,51 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, SuccessResponse{
 		Message: "Input deleted successfully",
+	})
+}
+
+func (c *InputController) Authenticate(ctx *gin.Context) {
+	var authData model.IngestAuthData
+	if err := ctx.BindJSON(&authData); err != nil {
+		statusCode, response := handleValidationError(err)
+		if statusCode == 0 && response == nil {
+			ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+				Error: Error{
+					Message: "InternalServerError: failed to authenticate",
+				},
+			})
+
+			return
+		}
+
+		ctx.JSON(int(statusCode), response)
+
+		return
+	}
+
+	err := c.inputHandler.Authenticate(ctx, authData)
+
+	switch {
+	case err == service.ErrFailedAuth:
+		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+			Error: Error{
+				Message: "BadRequest: invalid credentials",
+			},
+		})
+
+		return
+	case err != nil:
+		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error: Error{
+				Message: "InternalServerError: failed to authenticate",
+			},
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, SuccessResponse{
+		Message: "Ingest authenticated successfully",
 	})
 }
 
@@ -166,7 +211,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 	if err := n.notificationHandler.PackageStream(ctx, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{
-				Message: "Internal server error while creating input",
+				Message: "InternalServerError: while creating input",
 			},
 		})
 

@@ -39,7 +39,7 @@ udpMaxPayloadSize: 1472
 # }
 # If the response code is 20x, authentication is accepted, otherwise
 # it is discarded.
-externalAuthenticationURL:
+externalAuthenticationURL: http://api:8080/api/v1/inputs/auth
 
 # Enable Prometheus-compatible metrics.
 metrics: yes
