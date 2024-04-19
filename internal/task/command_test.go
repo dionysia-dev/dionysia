@@ -19,9 +19,10 @@ func TestGPACCommandExecute(t *testing.T) {
 		assert.Equal(t, "gpac", program)
 		expectedArgs := []string{
 			"-i", "rtmp://localhost/1234",
-			"@", "b=1000k",
-			"@@", "b=2000k",
+			"@", "c=avc:b=1000k",
+			"@@", "c=avc:b=2000k",
 			"@@", "c=aac:b=128k",
+			"@", "@1", "@2",
 			"-o", "/output/1234/index.m3u8:segdur=2:dmode=dynamic:profile=live:muxtype=ts",
 		}
 		assert.Equal(t, expectedArgs, args)

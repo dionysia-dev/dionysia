@@ -116,11 +116,18 @@ func (g *GPACCommand) Execute() error {
 			profileFlag = "@"
 		}
 
-		args = append(args, profileFlag, bitrate)
+		args = append(args, profileFlag, fmt.Sprintf("c=avc:%s", bitrate))
 	}
 
 	for _, a := range g.Input.AudioProfiles {
 		args = append(args, "@@", fmt.Sprintf("c=aac:b=%dk", a.Rate))
+	}
+
+	// connect channels
+	args = append(args, "@")
+	totalChannels := len(g.Input.VideoProfiles) + len(g.Input.AudioProfiles)
+	for i := 1; i < totalChannels; i++ {
+		args = append(args, fmt.Sprintf("@%d", i))
 	}
 
 	args = append(args, "-o", fmt.Sprintf("%s/%s/index.m3u8:segdur=2:dmode=dynamic:profile=live:muxtype=ts", g.Output, g.ID))
