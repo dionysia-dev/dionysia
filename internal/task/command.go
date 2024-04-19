@@ -123,9 +123,10 @@ func (g *GPACCommand) Execute() error {
 		args = append(args, "@@", fmt.Sprintf("c=aac:b=%dk", a.Rate))
 	}
 
-	// connect channels
+	// connect filters
 	args = append(args, "@")
 	totalChannels := len(g.Input.VideoProfiles) + len(g.Input.AudioProfiles)
+
 	for i := 1; i < totalChannels; i++ {
 		args = append(args, fmt.Sprintf("@%d", i))
 	}
