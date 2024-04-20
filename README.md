@@ -1,12 +1,12 @@
 # Dionysia
 
-> A streaming platform based on open source software
+> A live streaming platform based on open source software
 
 If you are interested on reading my ideas and thoughts about this project, you can read the [dev log](docs/DEV_LOG.md)
 
 ## What is this?
 
-This project is a streaming platform based on open source software. The main goal is to create a platform that can be used by anyone to stream their content, be it a game, a podcast, a talk show, etc.
+This project is a live streaming platform based on open source software. The main goal is to create a platform that can be used by anyone to stream their content, be it a game, a podcast, a talk show, etc.
 
 It plugs many open source projects together to create a seamless experience for video developers.
 
