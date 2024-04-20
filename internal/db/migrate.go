@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/learn-video/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/model"
 	"gorm.io/gorm"
 )
 

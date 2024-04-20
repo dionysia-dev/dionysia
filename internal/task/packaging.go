@@ -7,9 +7,9 @@ import (
 
 	"encoding/json"
 
+	"github.com/dionysia-dev/dionysia/internal/model"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/dionysia/internal/model"
 )
 
 const (

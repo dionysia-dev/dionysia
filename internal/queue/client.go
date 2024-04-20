@@ -1,8 +1,8 @@
 package queue
 
 import (
+	"github.com/dionysia-dev/dionysia/internal/config"
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/dionysia/internal/config"
 )
 
 type Client interface {

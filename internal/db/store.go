@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
+	"github.com/dionysia-dev/dionysia/internal/model"
 	"github.com/google/uuid"
-	"github.com/learn-video/dionysia/internal/model"
 	"gorm.io/gorm"
 )
 

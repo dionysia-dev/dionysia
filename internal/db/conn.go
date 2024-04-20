@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/learn-video/dionysia/internal/config"
+	"github.com/dionysia-dev/dionysia/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

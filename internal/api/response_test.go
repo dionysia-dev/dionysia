@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/dionysia-dev/dionysia/internal/model"
 	"github.com/go-playground/validator/v10"
-	"github.com/learn-video/dionysia/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

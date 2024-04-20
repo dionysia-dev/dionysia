@@ -3,8 +3,8 @@ package task_test
 import (
 	"testing"
 
-	"github.com/learn-video/dionysia/internal/model"
-	"github.com/learn-video/dionysia/internal/task"
+	"github.com/dionysia-dev/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/task"
 	"github.com/stretchr/testify/assert"
 )
 

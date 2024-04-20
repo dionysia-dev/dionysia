@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
+	"github.com/dionysia-dev/dionysia/internal/task"
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/dionysia/internal/task"
 	"github.com/stretchr/testify/assert"
 )
 

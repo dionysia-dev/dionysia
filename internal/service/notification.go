@@ -4,10 +4,10 @@ import (
 	"context"
 	"log"
 
+	"github.com/dionysia-dev/dionysia/internal/db"
+	"github.com/dionysia-dev/dionysia/internal/queue"
+	"github.com/dionysia-dev/dionysia/internal/task"
 	"github.com/google/uuid"
-	"github.com/learn-video/dionysia/internal/db"
-	"github.com/learn-video/dionysia/internal/queue"
-	"github.com/learn-video/dionysia/internal/task"
 )
 
 type NotificationHandler interface {

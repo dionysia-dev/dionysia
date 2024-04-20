@@ -4,12 +4,12 @@ import (
 	"context"
 	"testing"
 
+	"github.com/dionysia-dev/dionysia/internal/mocks"
+	"github.com/dionysia-dev/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/service"
+	"github.com/dionysia-dev/dionysia/internal/task"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/learn-video/dionysia/internal/mocks"
-	"github.com/learn-video/dionysia/internal/model"
-	"github.com/learn-video/dionysia/internal/service"
-	"github.com/learn-video/dionysia/internal/task"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
 )

@@ -2,8 +2,8 @@
 
 **Did you find a bug?**
 
-* **Ensure the bug was not already reported by searching on GitHub under** [issues](https://github.com/learn-video/dionysia/issues)
-* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/learn-video/dionysia/issues/new).
+* **Ensure the bug was not already reported by searching on GitHub under** [issues](https://github.com/dionysia-dev/dionysia/issues)
+* If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/dionysia-dev/dionysia/issues/new).
 
 **Did you write a patch that fixes a bug?**
 

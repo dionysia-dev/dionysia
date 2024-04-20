@@ -3,10 +3,10 @@ package api
 import (
 	"net/http"
 
+	"github.com/dionysia-dev/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/learn-video/dionysia/internal/model"
-	"github.com/learn-video/dionysia/internal/service"
 )
 
 type InputController struct {

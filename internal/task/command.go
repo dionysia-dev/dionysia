@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/learn-video/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/model"
 )
 
 const (

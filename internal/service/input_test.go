@@ -7,9 +7,9 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/mock/gomock"
 
-	"github.com/learn-video/dionysia/internal/mocks"
-	"github.com/learn-video/dionysia/internal/model"
-	"github.com/learn-video/dionysia/internal/service"
+	"github.com/dionysia-dev/dionysia/internal/mocks"
+	"github.com/dionysia-dev/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/stretchr/testify/assert"
 )
 

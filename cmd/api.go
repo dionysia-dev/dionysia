@@ -3,13 +3,13 @@ package cmd
 import (
 	"log"
 
+	"github.com/dionysia-dev/dionysia/internal/api"
+	"github.com/dionysia-dev/dionysia/internal/config"
+	"github.com/dionysia-dev/dionysia/internal/db"
+	"github.com/dionysia-dev/dionysia/internal/logging"
+	"github.com/dionysia-dev/dionysia/internal/queue"
+	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/joho/godotenv"
-	"github.com/learn-video/dionysia/internal/api"
-	"github.com/learn-video/dionysia/internal/config"
-	"github.com/learn-video/dionysia/internal/db"
-	"github.com/learn-video/dionysia/internal/logging"
-	"github.com/learn-video/dionysia/internal/queue"
-	"github.com/learn-video/dionysia/internal/service"
 	"github.com/spf13/cobra"
 	"go.uber.org/fx"
 )

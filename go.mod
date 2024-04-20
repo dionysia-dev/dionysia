@@ -1,4 +1,4 @@
-module github.com/learn-video/dionysia
+module github.com/dionysia-dev/dionysia
 
 go 1.22.1
 
