@@ -7,7 +7,7 @@ CREATE TABLE inputs (
 CREATE TABLE audio_profiles (
     id SERIAL PRIMARY KEY,
     input_id UUID NOT NULL,
-    rate INT,
+    bitrate INT,
     codec TEXT NOT NULL,
     FOREIGN KEY (input_id) REFERENCES inputs(id)
 );

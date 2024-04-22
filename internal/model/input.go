@@ -14,7 +14,7 @@ type Input struct {
 
 type AudioProfile struct {
 	InputID uuid.UUID
-	Rate    int    `json:"rate"`
+	Bitrate int    `json:"bitrate"`
 	Codec   string `json:"codec"`
 }
 

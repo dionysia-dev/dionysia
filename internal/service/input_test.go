@@ -46,7 +46,7 @@ func TestGetInput(t *testing.T) {
 		Name:          "big buck bunny",
 		Format:        "rtmp",
 		VideoProfiles: []model.VideoProfile{{Codec: "h264", Bitrate: 1000}},
-		AudioProfiles: []model.AudioProfile{{Codec: "aac", Rate: 128}},
+		AudioProfiles: []model.AudioProfile{{Codec: "aac", Bitrate: 128}},
 	}
 
 	mockStore.EXPECT().GetInput(ctx, expectedID).Return(expectedInput, nil).Times(1)
@@ -62,7 +62,7 @@ func TestGetInput(t *testing.T) {
 	assert.Equal(t, "h264", result.VideoProfiles[0].Codec)
 	assert.Equal(t, 1000, result.VideoProfiles[0].Bitrate)
 	assert.Equal(t, "aac", result.AudioProfiles[0].Codec)
-	assert.Equal(t, 128, result.AudioProfiles[0].Rate)
+	assert.Equal(t, 128, result.AudioProfiles[0].Bitrate)
 }
 
 func TestDeleteInput(t *testing.T) {

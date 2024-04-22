@@ -11,7 +11,7 @@ import (
 func TestGPACCommandExecute(t *testing.T) {
 	input := model.Input{
 		VideoProfiles: []model.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}},
-		AudioProfiles: []model.AudioProfile{{Rate: 128}},
+		AudioProfiles: []model.AudioProfile{{Bitrate: 128}},
 	}
 	cmd := task.NewGPACCommand("1234", "rtmp://localhost", "/output", input)
 

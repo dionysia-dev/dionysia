@@ -61,8 +61,8 @@ func NewDefaultCommandConfig() *CommandConfig {
 		//nolint:gomnd // values are self explanatory
 		DefaultAudioProfiles: []model.AudioProfile{
 			{
-				Codec: defaultAudioCodec,
-				Rate:  128,
+				Codec:   defaultAudioCodec,
+				Bitrate: 128,
 			},
 		},
 	}
@@ -120,7 +120,7 @@ func (g *GPACCommand) Execute() error {
 	}
 
 	for _, a := range g.Input.AudioProfiles {
-		args = append(args, "@@", fmt.Sprintf("c=aac:b=%dk", a.Rate))
+		args = append(args, "@@", fmt.Sprintf("c=aac:b=%dk", a.Bitrate))
 	}
 
 	// connect filters
