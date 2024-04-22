@@ -19,8 +19,8 @@ docs:
 	swag init -g internal/api/api.go -o docs
 
 # ingest a real video in loop
-ingest:
+ingest $uuid:
 		ffmpeg -re -stream_loop -1 -i $(pwd)/files/big_buck_bunny.mp4 \
 		-vf "drawtext=fontfile=files/OpenSans-Bold.ttf:fontsize=24:fontcolor=white:x=10:y=10:box=1:boxcolor=black@0.5:boxborderw=5:text='%{pts\:hms}'" \
 		-c:v libx264 -preset ultrafast -tune zerolatency -profile:v high \
-		-f flv rtmp://localhost:1935/big_buck_bunny
+		-f flv rtmp://localhost:1935/$uuid
