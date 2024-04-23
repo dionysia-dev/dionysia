@@ -14,8 +14,8 @@ type Input struct {
 
 type AudioProfile struct {
 	InputID uuid.UUID
-	Bitrate int    `json:"bitrate"`
 	Codec   string `json:"codec"`
+	Bitrate int    `json:"bitrate"`
 }
 
 type VideoProfile struct {
@@ -26,9 +26,4 @@ type VideoProfile struct {
 	Framerate      int    `json:"framerate"`
 	Width          int    `json:"width"`
 	Height         int    `json:"height"`
-}
-
-type IngestAuthData struct {
-	Path   uuid.UUID `json:"path" validate:"required"`
-	Action string    `json:"action" validate:"required"`
 }

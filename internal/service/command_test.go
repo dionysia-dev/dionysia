@@ -1,19 +1,18 @@
-package task_test
+package service_test
 
 import (
 	"testing"
 
-	"github.com/dionysia-dev/dionysia/internal/model"
-	"github.com/dionysia-dev/dionysia/internal/task"
+	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGPACCommandExecute(t *testing.T) {
-	input := model.Input{
-		VideoProfiles: []model.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}},
-		AudioProfiles: []model.AudioProfile{{Bitrate: 128}},
+	input := service.Input{
+		VideoProfiles: []service.VideoProfile{{Bitrate: 1000}, {Bitrate: 2000}},
+		AudioProfiles: []service.AudioProfile{{Bitrate: 128}},
 	}
-	cmd := task.NewGPACCommand("1234", "rtmp://localhost", "/output", input)
+	cmd := service.NewGPACCommand("1234", "rtmp://localhost", "/output", input)
 
 	mockRunner := func(program string, args []string) error {
 		assert.Equal(t, "gpac", program)

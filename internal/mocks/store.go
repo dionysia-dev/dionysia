@@ -12,8 +12,8 @@ import (
 	context "context"
 	reflect "reflect"
 
+	model "github.com/dionysia-dev/dionysia/internal/db/model"
 	uuid "github.com/google/uuid"
-	model "github.com/dionysia-dev/dionysia/internal/model"
 	gomock "go.uber.org/mock/gomock"
 )
 

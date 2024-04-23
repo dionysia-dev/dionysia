@@ -27,8 +27,8 @@ type ErrorResponse struct {
 
 type StatusCode int
 
-// handleValidationError validate and handle errors of structs that has `validator/v10` rules
-func handleValidationError(err error) (StatusCode, *ErrorResponse) {
+// HandleValidationError validate and handle errors of structs that has `validator/v10` rules
+func HandleValidationError(err error) (StatusCode, *ErrorResponse) {
 	validationErrors, ok := err.(validator.ValidationErrors)
 	if !ok {
 		return 0, nil

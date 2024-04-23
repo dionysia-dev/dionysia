@@ -1,10 +1,10 @@
-package api
+package api_test
 
 import (
 	"net/http"
 	"testing"
 
-	"github.com/dionysia-dev/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/api"
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
 )
@@ -15,23 +15,22 @@ var validate *validator.Validate
 func TestHandleValidationError(t *testing.T) {
 	validate = validator.New(validator.WithRequiredStructEnabled())
 
-	// Test cases
 	testCases := []struct {
 		name               string
-		inputError         *model.Input
-		expectedStatusCode StatusCode
-		expectedErrorResp  *ErrorResponse
+		inputError         *api.InputData
+		expectedStatusCode api.StatusCode
+		expectedErrorResp  *api.ErrorResponse
 	}{
 		{
 			name: "Test with bad request body",
-			inputError: &model.Input{
+			inputError: &api.InputData{
 				Name: "just a name",
 			},
 			expectedStatusCode: http.StatusBadRequest,
-			expectedErrorResp: &ErrorResponse{
-				Error: Error{
+			expectedErrorResp: &api.ErrorResponse{
+				Error: api.Error{
 					Message: "Invalid request parameters",
-					Details: []ErrorDetail{
+					Details: []api.ErrorDetail{
 						{
 							Reason:  "Format",
 							Message: "required",
@@ -42,7 +41,7 @@ func TestHandleValidationError(t *testing.T) {
 		},
 		{
 			name: "Test with valid request body",
-			inputError: &model.Input{
+			inputError: &api.InputData{
 				Name:   "beautiful name",
 				Format: "nice format",
 			},
@@ -54,7 +53,7 @@ func TestHandleValidationError(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			err := validate.Struct(tc.inputError)
-			actualStatusCode, actualErrorResp := handleValidationError(err)
+			actualStatusCode, actualErrorResp := api.HandleValidationError(err)
 
 			assert.Equal(t, tc.expectedStatusCode, actualStatusCode, "Status code mismatch")
 			assert.Equal(t, tc.expectedErrorResp, actualErrorResp, "Error response mismatch")

@@ -4,14 +4,14 @@ import (
 	"context"
 	"testing"
 
-	"github.com/dionysia-dev/dionysia/internal/mocks"
-	"github.com/dionysia-dev/dionysia/internal/model"
-	"github.com/dionysia-dev/dionysia/internal/service"
-	"github.com/dionysia-dev/dionysia/internal/task"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
-	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
+
+	"github.com/dionysia-dev/dionysia/internal/db/model" // Make sure this is the correct import path for model
+	"github.com/dionysia-dev/dionysia/internal/mocks"
+	"github.com/dionysia-dev/dionysia/internal/service"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPackageStreamSuccess(t *testing.T) {
@@ -23,12 +23,12 @@ func TestPackageStreamSuccess(t *testing.T) {
 	handler := service.NewNotificationHandler(mockClient, mockStore)
 
 	taskID := uuid.New()
-	input := model.Input{ID: taskID}
-	expectedTask, _ := task.NewPackageTask(taskID, input)
+	expectedInput := model.Input{ID: taskID, Name: "test"}
+	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"})
 
 	expectedInfo := &asynq.TaskInfo{ID: "1", Queue: "default"}
 
-	mockStore.EXPECT().GetInput(gomock.Any(), taskID).Return(input, nil).Times(1)
+	mockStore.EXPECT().GetInput(gomock.Any(), taskID).Return(expectedInput, nil).Times(1)
 	mockClient.EXPECT().Enqueue(expectedTask).Return(expectedInfo, nil).Times(1)
 
 	err := handler.PackageStream(context.TODO(), taskID)
@@ -45,10 +45,10 @@ func TestPackageStreamEnqueueFailure(t *testing.T) {
 	handler := service.NewNotificationHandler(mockClient, mockStore)
 
 	taskID := uuid.New()
-	input := model.Input{ID: taskID}
-	expectedTask, _ := task.NewPackageTask(taskID, input)
+	expectedInput := model.Input{ID: taskID, Name: "test"}
+	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"})
 
-	mockStore.EXPECT().GetInput(gomock.Any(), taskID).Return(input, nil).Times(1)
+	mockStore.EXPECT().GetInput(gomock.Any(), taskID).Return(expectedInput, nil).Times(1)
 	mockClient.EXPECT().Enqueue(expectedTask).Return(nil, assert.AnError).Times(1)
 
 	err := handler.PackageStream(context.TODO(), taskID)

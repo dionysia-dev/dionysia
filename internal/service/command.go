@@ -1,12 +1,10 @@
-package task
+package service
 
 import (
 	"fmt"
 	"log"
 	"os/exec"
 	"strings"
-
-	"github.com/dionysia-dev/dionysia/internal/model"
 )
 
 const (
@@ -17,14 +15,14 @@ const (
 )
 
 type CommandConfig struct {
-	DefaultVideoProfiles []model.VideoProfile
-	DefaultAudioProfiles []model.AudioProfile
+	DefaultVideoProfiles []VideoProfile
+	DefaultAudioProfiles []AudioProfile
 }
 
 func NewDefaultCommandConfig() *CommandConfig {
 	return &CommandConfig{
 		//nolint:gomnd // values are self explanatory
-		DefaultVideoProfiles: []model.VideoProfile{
+		DefaultVideoProfiles: []VideoProfile{
 			{
 				Codec:          defaultVideoCodec,
 				Bitrate:        500,
@@ -59,7 +57,7 @@ func NewDefaultCommandConfig() *CommandConfig {
 			},
 		},
 		//nolint:gomnd // values are self explanatory
-		DefaultAudioProfiles: []model.AudioProfile{
+		DefaultAudioProfiles: []AudioProfile{
 			{
 				Codec:   defaultAudioCodec,
 				Bitrate: 128,
@@ -76,7 +74,7 @@ func NewGPACCommandBuilder(config *CommandConfig) *GPACCommandBuilder {
 	return &GPACCommandBuilder{config: config}
 }
 
-func (b *GPACCommandBuilder) Build(id, address, output string, input model.Input) *GPACCommand {
+func (b *GPACCommandBuilder) Build(id, address, output string, input Input) *GPACCommand {
 	if len(input.VideoProfiles) == 0 {
 		input.VideoProfiles = b.config.DefaultVideoProfiles
 	}
@@ -101,7 +99,7 @@ type GPACCommand struct {
 	ID      string
 	Address string
 	Output  string
-	Input   model.Input
+	Input   Input
 	Runner  func(string, []string) error
 }
 
@@ -138,7 +136,7 @@ func (g *GPACCommand) Execute() error {
 	return g.Runner("gpac", args)
 }
 
-func NewGPACCommand(id, address, output string, input model.Input) *GPACCommand {
+func NewGPACCommand(id, address, output string, input Input) *GPACCommand {
 	runner := func(program string, args []string) error {
 		cmd := exec.Command(program, args...)
 		return cmd.Run()

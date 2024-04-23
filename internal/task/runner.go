@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/hibiken/asynq"
 	"go.uber.org/fx"
 )
@@ -12,7 +13,7 @@ func Run(lc fx.Lifecycle, srv *asynq.Server) {
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
 			mux := asynq.NewServeMux()
-			mux.HandleFunc(TypeStreamPackage, HandleStreamPackageTask)
+			mux.HandleFunc(service.TypeStreamPackage, service.HandleStreamPackageTask)
 
 			go func() {
 				if err := srv.Run(mux); err != nil {

@@ -3,7 +3,6 @@ package api
 import (
 	"net/http"
 
-	"github.com/dionysia-dev/dionysia/internal/model"
 	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -31,14 +30,12 @@ func NewInputController(inputHandler service.InputHandler) *InputController {
 // @Failure 500 {object} api.ErrorResponse "Internal server error"
 // @Router /inputs [post]
 func (c *InputController) CreateInput(ctx *gin.Context) {
-	var inputData model.Input
+	var inputData InputData
 	if err := ctx.BindJSON(&inputData); err != nil {
-		statusCode, response := handleValidationError(err)
+		statusCode, response := HandleValidationError(err)
 		if statusCode == 0 && response == nil {
 			ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-				Error: Error{
-					Message: "InternalServerError: handle validation failed",
-				},
+				Error: Error{Message: "InternalServerError: handle validation failed"},
 			})
 
 			return
@@ -49,20 +46,50 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 		return
 	}
 
-	input, err := c.inputHandler.CreateInput(ctx, &inputData)
+	audioProfiles := make([]service.AudioProfile, 0, len(inputData.AudioProfiles))
+	for _, audioProfileData := range inputData.AudioProfiles {
+		audioProfiles = append(audioProfiles, service.AudioProfile{
+			Codec:   audioProfileData.Codec,
+			Bitrate: audioProfileData.Bitrate,
+		})
+	}
+
+	videoProfiles := make([]service.VideoProfile, 0, len(inputData.VideoProfiles))
+	for _, videoProfileData := range inputData.VideoProfiles {
+		videoProfiles = append(videoProfiles, service.VideoProfile{
+			Codec:          videoProfileData.Codec,
+			Bitrate:        videoProfileData.Bitrate,
+			MaxKeyInterval: videoProfileData.MaxKeyInterval,
+			Framerate:      videoProfileData.Framerate,
+			Width:          videoProfileData.Width,
+			Height:         videoProfileData.Height,
+		})
+	}
+
+	input, err := c.inputHandler.CreateInput(ctx, &service.Input{
+		Name:          inputData.Name,
+		Format:        inputData.Format,
+		AudioProfiles: audioProfiles,
+		VideoProfiles: videoProfiles,
+	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-			Error: Error{
-				Message: "InternalServerError: failed creating input",
-			},
+			Error: Error{Message: "InternalServerError: failed creating input"},
 		})
 
 		return
 	}
 
+	responseData := InputData{
+		ID:            input.ID,
+		Name:          input.Name,
+		Format:        input.Format,
+		AudioProfiles: inputData.AudioProfiles,
+		VideoProfiles: inputData.VideoProfiles,
+	}
 	ctx.JSON(http.StatusCreated, SuccessResponse{
 		Message: "Input created successfully",
-		Data:    input,
+		Data:    responseData,
 	})
 }
 
@@ -78,9 +105,7 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse{
-			Error: Error{
-				Message: "BadRequest: invalid UUID format",
-			},
+			Error: Error{Message: "BadRequest: invalid UUID format"},
 		})
 
 		return
@@ -89,9 +114,7 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 	input, err := c.inputHandler.GetInput(ctx, id)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-			Error: Error{
-				Message: "InternalServerError: failed creating input",
-			},
+			Error: Error{Message: "InternalServerError: failed creating input"},
 		})
 
 		return
@@ -114,9 +137,7 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 	id, err := uuid.Parse(ctx.Param("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse{
-			Error: Error{
-				Message: "BadRequest: invalid UUID format",
-			},
+			Error: Error{Message: "BadRequest: invalid UUID format"},
 		})
 
 		return
@@ -124,9 +145,7 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 
 	if err := c.inputHandler.DeleteInput(ctx, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-			Error: Error{
-				Message: "InternalServerError: failed deleting input",
-			},
+			Error: Error{Message: "InternalServerError: failed deleting input"},
 		})
 
 		return
@@ -138,14 +157,12 @@ func (c *InputController) DeleteInput(ctx *gin.Context) {
 }
 
 func (c *InputController) Authenticate(ctx *gin.Context) {
-	var authData model.IngestAuthData
+	var authData IngestAuthData
 	if err := ctx.BindJSON(&authData); err != nil {
-		statusCode, response := handleValidationError(err)
+		statusCode, response := HandleValidationError(err)
 		if statusCode == 0 && response == nil {
 			ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-				Error: Error{
-					Message: "InternalServerError: failed to authenticate",
-				},
+				Error: Error{Message: "InternalServerError: failed to authenticate"},
 			})
 
 			return
@@ -156,22 +173,21 @@ func (c *InputController) Authenticate(ctx *gin.Context) {
 		return
 	}
 
-	err := c.inputHandler.Authenticate(ctx, authData)
+	err := c.inputHandler.Authenticate(ctx, service.IngestAuth{
+		Path:   authData.Path,
+		Action: authData.Action,
+	})
 
 	switch {
 	case err == service.ErrFailedAuth:
 		ctx.JSON(http.StatusBadRequest, ErrorResponse{
-			Error: Error{
-				Message: "BadRequest: invalid credentials",
-			},
+			Error: Error{Message: "BadRequest: invalid credentials"},
 		})
 
 		return
 	case err != nil:
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-			Error: Error{
-				Message: "InternalServerError: failed to authenticate",
-			},
+			Error: Error{Message: "InternalServerError: failed to authenticate"},
 		})
 
 		return
@@ -200,9 +216,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 	id, err := uuid.Parse(ctx.Query("id"))
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, ErrorResponse{
-			Error: Error{
-				Message: "Invalid UUID format",
-			},
+			Error: Error{Message: "Invalid UUID format"},
 		})
 
 		return
@@ -210,9 +224,7 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 
 	if err := n.notificationHandler.PackageStream(ctx, id); err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
-			Error: Error{
-				Message: "InternalServerError: while creating input",
-			},
+			Error: Error{Message: "InternalServerError: while creating input"},
 		})
 
 		return

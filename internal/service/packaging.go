@@ -1,4 +1,4 @@
-package task
+package service
 
 import (
 	"context"
@@ -7,7 +7,6 @@ import (
 
 	"encoding/json"
 
-	"github.com/dionysia-dev/dionysia/internal/model"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
 )
@@ -17,12 +16,12 @@ const (
 )
 
 type StreamPayload struct {
-	ID      uuid.UUID   `json:"id"`
-	Input   model.Input `json:"input"`
-	Address string      `json:"address"`
+	ID      uuid.UUID `json:"id"`
+	Input   Input     `json:"input"`
+	Address string    `json:"address"`
 }
 
-func NewPackageTask(id uuid.UUID, input model.Input) (*asynq.Task, error) {
+func NewPackageTask(id uuid.UUID, input Input) (*asynq.Task, error) {
 	payload, err := json.Marshal(StreamPayload{
 		ID:      id,
 		Input:   input,

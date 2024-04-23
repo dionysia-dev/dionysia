@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/dionysia-dev/dionysia/internal/model"
+	"github.com/dionysia-dev/dionysia/internal/db/model"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )

@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 	"go.uber.org/mock/gomock"
 
+	"github.com/dionysia-dev/dionysia/internal/db/model"
 	"github.com/dionysia-dev/dionysia/internal/mocks"
-	"github.com/dionysia-dev/dionysia/internal/model"
 	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,11 +21,13 @@ func TestCreateInput(t *testing.T) {
 	handler := service.NewInputHandler(mockStore)
 
 	ctx := context.Background()
-	input := model.Input{Name: "big buck bunny", Format: "rtmp"}
 
-	mockStore.EXPECT().CreateInput(ctx, &input).Return(nil).Times(1)
+	mockStore.EXPECT().CreateInput(ctx, gomock.Any()).DoAndReturn(func(_ context.Context, in *model.Input) *model.Input {
+		in.ID = uuid.New()
+		return in
+	}).Return(nil).Times(1)
 
-	result, err := handler.CreateInput(ctx, &input)
+	result, err := handler.CreateInput(ctx, &service.Input{Name: "big buck bunny", Format: "rtmp"})
 
 	assert.NoError(t, err)
 	assert.Equal(t, "big buck bunny", result.Name)

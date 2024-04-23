@@ -6,7 +6,6 @@ import (
 
 	"github.com/dionysia-dev/dionysia/internal/db"
 	"github.com/dionysia-dev/dionysia/internal/queue"
-	"github.com/dionysia-dev/dionysia/internal/task"
 	"github.com/google/uuid"
 )
 
@@ -32,7 +31,10 @@ func (h *notificationHandler) PackageStream(ctx context.Context, id uuid.UUID) e
 		return err
 	}
 
-	t, err := task.NewPackageTask(id, input)
+	t, err := NewPackageTask(id, Input{
+		ID:   input.ID,
+		Name: input.Name,
+	})
 	if err != nil {
 		return err
 	}
