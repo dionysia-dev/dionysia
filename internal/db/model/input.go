@@ -13,13 +13,17 @@ type Input struct {
 }
 
 type AudioProfile struct {
+	ID      uint `gorm:"primaryKey"`
 	InputID uuid.UUID
+	Input   Input
 	Codec   string `json:"codec"`
 	Bitrate int    `json:"bitrate"`
 }
 
 type VideoProfile struct {
+	ID             uint `gorm:"primaryKey"`
 	InputID        uuid.UUID
+	Input          Input
 	Codec          string `json:"codec"`
 	Bitrate        int    `json:"bitrate"`
 	MaxKeyInterval int    `json:"max_key_interval"`

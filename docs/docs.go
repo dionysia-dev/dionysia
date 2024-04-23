@@ -32,7 +32,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.Input"
+                            "$ref": "#/definitions/api.InputData"
                         }
                     }
                 ],
@@ -172,6 +172,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "api.AudioProfileData": {
+            "type": "object",
+            "properties": {
+                "bitrate": {
+                    "type": "integer"
+                },
+                "codec": {
+                    "type": "string"
+                }
+            }
+        },
         "api.Error": {
             "type": "object",
             "properties": {
@@ -205,6 +216,33 @@ const docTemplate = `{
                 }
             }
         },
+        "api.InputData": {
+            "type": "object",
+            "required": [
+                "format",
+                "name"
+            ],
+            "properties": {
+                "audio_profiles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/api.AudioProfileData"
+                    }
+                },
+                "format": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "video_profiles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/api.VideoProfileData"
+                    }
+                }
+            }
+        },
         "api.SuccessResponse": {
             "type": "object",
             "properties": {
@@ -214,48 +252,7 @@ const docTemplate = `{
                 }
             }
         },
-        "model.AudioProfile": {
-            "type": "object",
-            "properties": {
-                "codec": {
-                    "type": "string"
-                },
-                "inputID": {
-                    "type": "string"
-                },
-                "rate": {
-                    "type": "integer"
-                }
-            }
-        },
-        "model.Input": {
-            "type": "object",
-            "required": [
-                "format",
-                "name"
-            ],
-            "properties": {
-                "audio": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.AudioProfile"
-                    }
-                },
-                "format": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "video": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/model.VideoProfile"
-                    }
-                }
-            }
-        },
-        "model.VideoProfile": {
+        "api.VideoProfileData": {
             "type": "object",
             "properties": {
                 "bitrate": {
@@ -269,9 +266,6 @@ const docTemplate = `{
                 },
                 "height": {
                     "type": "integer"
-                },
-                "inputID": {
-                    "type": "string"
                 },
                 "max_key_interval": {
                     "type": "integer"

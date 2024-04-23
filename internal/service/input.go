@@ -61,12 +61,35 @@ func NewInputHandler(store db.InputStore) InputHandler {
 
 func (handler *inputHandler) CreateInput(ctx context.Context, in *Input) (Input, error) {
 	in.ID = uuid.New()
+
+	audioProfiles := make([]model.AudioProfile, len(in.AudioProfiles))
+	for i, audio := range in.AudioProfiles {
+		audioProfiles[i] = model.AudioProfile{
+			InputID: in.ID,
+			Codec:   audio.Codec,
+			Bitrate: audio.Bitrate,
+		}
+	}
+
+	videoProfiles := make([]model.VideoProfile, len(in.VideoProfiles))
+	for i, video := range in.VideoProfiles {
+		videoProfiles[i] = model.VideoProfile{
+			InputID:        in.ID,
+			Codec:          video.Codec,
+			Bitrate:        video.Bitrate,
+			MaxKeyInterval: video.MaxKeyInterval,
+			Framerate:      video.Framerate,
+			Width:          video.Width,
+			Height:         video.Height,
+		}
+	}
+
 	err := handler.store.CreateInput(ctx, &model.Input{
 		ID:            in.ID,
 		Name:          in.Name,
 		Format:        in.Format,
-		AudioProfiles: make([]model.AudioProfile, len(in.AudioProfiles)),
-		VideoProfiles: make([]model.VideoProfile, len(in.VideoProfiles)),
+		AudioProfiles: audioProfiles,
+		VideoProfiles: videoProfiles,
 	})
 
 	return *in, err

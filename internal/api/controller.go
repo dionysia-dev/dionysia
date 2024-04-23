@@ -24,7 +24,7 @@ func NewInputController(inputHandler service.InputHandler) *InputController {
 // @Description Create an input ready to be ingested
 // @Accept json
 // @Produce json
-// @Param input body model.Input true "Input data"
+// @Param input body api.InputData true "Input data"
 // @Success 201 {object} api.SuccessResponse
 // @Failure 400 {object} api.ErrorResponse "Invalid input data"
 // @Failure 500 {object} api.ErrorResponse "Internal server error"
@@ -46,32 +46,7 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 		return
 	}
 
-	audioProfiles := make([]service.AudioProfile, 0, len(inputData.AudioProfiles))
-	for _, audioProfileData := range inputData.AudioProfiles {
-		audioProfiles = append(audioProfiles, service.AudioProfile{
-			Codec:   audioProfileData.Codec,
-			Bitrate: audioProfileData.Bitrate,
-		})
-	}
-
-	videoProfiles := make([]service.VideoProfile, 0, len(inputData.VideoProfiles))
-	for _, videoProfileData := range inputData.VideoProfiles {
-		videoProfiles = append(videoProfiles, service.VideoProfile{
-			Codec:          videoProfileData.Codec,
-			Bitrate:        videoProfileData.Bitrate,
-			MaxKeyInterval: videoProfileData.MaxKeyInterval,
-			Framerate:      videoProfileData.Framerate,
-			Width:          videoProfileData.Width,
-			Height:         videoProfileData.Height,
-		})
-	}
-
-	input, err := c.inputHandler.CreateInput(ctx, &service.Input{
-		Name:          inputData.Name,
-		Format:        inputData.Format,
-		AudioProfiles: audioProfiles,
-		VideoProfiles: videoProfiles,
-	})
+	input, err := c.inputHandler.CreateInput(ctx, inputData.ToInput())
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: Error{Message: "InternalServerError: failed creating input"},
@@ -80,13 +55,7 @@ func (c *InputController) CreateInput(ctx *gin.Context) {
 		return
 	}
 
-	responseData := InputData{
-		ID:            input.ID,
-		Name:          input.Name,
-		Format:        input.Format,
-		AudioProfiles: inputData.AudioProfiles,
-		VideoProfiles: inputData.VideoProfiles,
-	}
+	responseData := FromInput(input)
 	ctx.JSON(http.StatusCreated, SuccessResponse{
 		Message: "Input created successfully",
 		Data:    responseData,
@@ -120,8 +89,9 @@ func (c *InputController) GetInput(ctx *gin.Context) {
 		return
 	}
 
+	responseData := FromInput(input)
 	ctx.JSON(http.StatusOK, SuccessResponse{
-		Data: input,
+		Data: responseData,
 	})
 }
 

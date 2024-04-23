@@ -1,5 +1,12 @@
 basePath: /api/v1
 definitions:
+  api.AudioProfileData:
+    properties:
+      bitrate:
+        type: integer
+      codec:
+        type: string
+    type: object
   api.Error:
     properties:
       details:
@@ -21,40 +28,31 @@ definitions:
       error:
         $ref: '#/definitions/api.Error'
     type: object
+  api.InputData:
+    properties:
+      audio_profiles:
+        items:
+          $ref: '#/definitions/api.AudioProfileData'
+        type: array
+      format:
+        type: string
+      name:
+        type: string
+      video_profiles:
+        items:
+          $ref: '#/definitions/api.VideoProfileData'
+        type: array
+    required:
+    - format
+    - name
+    type: object
   api.SuccessResponse:
     properties:
       data: {}
       message:
         type: string
     type: object
-  model.AudioProfile:
-    properties:
-      codec:
-        type: string
-      inputID:
-        type: string
-      rate:
-        type: integer
-    type: object
-  model.Input:
-    properties:
-      audio:
-        items:
-          $ref: '#/definitions/model.AudioProfile'
-        type: array
-      format:
-        type: string
-      name:
-        type: string
-      video:
-        items:
-          $ref: '#/definitions/model.VideoProfile'
-        type: array
-    required:
-    - format
-    - name
-    type: object
-  model.VideoProfile:
+  api.VideoProfileData:
     properties:
       bitrate:
         type: integer
@@ -64,8 +62,6 @@ definitions:
         type: integer
       height:
         type: integer
-      inputID:
-        type: string
       max_key_interval:
         type: integer
       width:
@@ -88,7 +84,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/model.Input'
+          $ref: '#/definitions/api.InputData'
       produces:
       - application/json
       responses:
