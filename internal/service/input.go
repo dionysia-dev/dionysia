@@ -99,7 +99,7 @@ func (handler *inputHandler) GetInput(ctx context.Context, id uuid.UUID) (Input,
 	in, err := handler.store.GetInput(ctx, id)
 
 	audioProfiles := make([]AudioProfile, len(in.AudioProfiles))
-	for i, audio := range in.AudioProfiles {
+	for i, audio := range in.AudioProfiles { //nolint: gocritic // Can't use pointers in models
 		audioProfiles[i] = AudioProfile{
 			InputID: in.ID,
 			Codec:   audio.Codec,
@@ -108,7 +108,7 @@ func (handler *inputHandler) GetInput(ctx context.Context, id uuid.UUID) (Input,
 	}
 
 	videoProfiles := make([]VideoProfile, len(in.VideoProfiles))
-	for i, video := range in.VideoProfiles {
+	for i, video := range in.VideoProfiles { //nolint: gocritic // Can't use pointers in models
 		videoProfiles[i] = VideoProfile{
 			InputID:        in.ID,
 			Codec:          video.Codec,
