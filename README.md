@@ -88,13 +88,15 @@ Feel free to contribute to this project by opening issues or pull requests.
 
 How could you contribute?
 
-* Open an issue to report a bug or suggest a new feature;
+* Opening an issue to report a bug or suggest a new feature;
 * Writing new features;
 * Covering the code with tests;
 * Improving the code quality;
 * Improving the documentation.
 
 If you want to contribute, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+For more **advanced** contributions, please, create an issue to discuss the feature you want to implement. If it is a complex decision or a big feature, it is better to create an ADR (Architecture Decision Record) to write down the decision and the reasons behind it. Check the [adr](docs/adr) folder for more information.
 
 ## Roadmap
 
