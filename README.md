@@ -16,7 +16,7 @@ Among the features that are planned for this project are:
 * Output streams in HLS (DASH coming soon);
 * API to manage inputs, workers, and metrics.
 
-If you are interested on reading my ideas and thoughts about this project, you can read the [dev log](docs/DEV_LOG.md)
+If you are interested in reading my ideas and thoughts about this project, you can read the [dev log](docs/DEV_LOG.md)
 
 ## How does it work?
 
