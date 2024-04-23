@@ -94,7 +94,7 @@ How could you contribute?
 * Improving the code quality;
 * Improving the documentation.
 
-If you want to contribute, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+If you want to contribute, please read the [CONTRIBUTING.md](.github/CONTRIBUTING.md) file.
 
 For more **advanced** contributions, please, create an issue to discuss the feature you want to implement. If it is a complex decision or a big feature, it is better to create an ADR (Architecture Decision Record) to write down the decision and the reasons behind it. Check the [adr](docs/adr) folder for more information.
 
