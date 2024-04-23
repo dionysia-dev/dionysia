@@ -86,6 +86,16 @@ just lint
 
 Feel free to contribute to this project by opening issues or pull requests.
 
+How could you contribute?
+
+* Open an issue to report a bug or suggest a new feature;
+* Writing new features;
+* Covering the code with tests;
+* Improving the code quality;
+* Improving the documentation.
+
+If you want to contribute, please read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
 ## Roadmap
 
 - [ ] Video and audio transcoding (profiles)
