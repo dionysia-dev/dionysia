@@ -15,7 +15,6 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/fx"
-	"go.uber.org/zap"
 )
 
 // @title           Streaming Platform API
@@ -23,9 +22,10 @@ import (
 // @description     Manage your streaming workflow
 // @BasePath  /api/v1
 
-func New(inputStore db.InputStore, _ *zap.SugaredLogger, nh service.NotificationHandler) *gin.Engine {
+func New(inputStore db.InputStore, nh service.NotificationHandler, oh service.OriginHandler) *gin.Engine {
 	inputController := NewInputController(service.NewInputHandler(inputStore))
 	notificationController := NewNotificationController(nh)
+	originController := NewOriginController(oh)
 
 	e := gin.Default()
 
@@ -37,6 +37,7 @@ func New(inputStore db.InputStore, _ *zap.SugaredLogger, nh service.Notification
 	v1.DELETE("/inputs/:id", inputController.DeleteInput)
 	v1.POST("/inputs/auth", inputController.Authenticate)
 	v1.POST("/notifications/package", notificationController.EnqueuePackaging)
+	v1.PUT("/origins", originController.UpdateOrigin)
 
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

@@ -16,6 +16,10 @@ type NotificationController struct {
 	notificationHandler service.NotificationHandler
 }
 
+type OriginController struct {
+	originHandler service.OriginHandler
+}
+
 func NewInputController(inputHandler service.InputHandler) *InputController {
 	return &InputController{inputHandler: inputHandler}
 }
@@ -202,5 +206,40 @@ func (n *NotificationController) EnqueuePackaging(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, SuccessResponse{
 		Message: "Packaging job enqueued successfully",
+	})
+}
+
+func NewOriginController(oh service.OriginHandler) *OriginController {
+	return &OriginController{originHandler: oh}
+}
+
+func (o *OriginController) UpdateOrigin(ctx *gin.Context) {
+	var originData OriginData
+	if err := ctx.BindJSON(&originData); err != nil {
+		statusCode, response := HandleValidationError(err)
+		if statusCode == 0 && response == nil {
+			ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+				Error: Error{Message: "InternalServerError: failed to update origin"},
+			})
+
+			return
+		}
+
+		ctx.JSON(int(statusCode), response)
+
+		return
+	}
+
+	origin := originData.ToOrigin()
+	if err := o.originHandler.Update(ctx, origin); err != nil {
+		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error: Error{Message: "InternalServerError: failed to update origin"},
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, SuccessResponse{
+		Message: "Origin updated successfully",
 	})
 }

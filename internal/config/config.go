@@ -12,6 +12,7 @@ type Config struct {
 	RedisAddr          string        `env:"REDIS_ADDR" envDefault:"localhost:6379"`
 	MaxConcurrentTasks int           `env:"MAX_CONCURRENT_TASKS" envDefault:"10"`
 	ReadHeaderTimeout  time.Duration `env:"READ_HEADER_TIMEOUT" envDefault:"2"`
+	OriginTTL          int           `env:"ORIGIN_TTL" envDefault:"10"`
 }
 
 func New() (*Config, error) {

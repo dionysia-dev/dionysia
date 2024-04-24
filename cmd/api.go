@@ -6,6 +6,7 @@ import (
 	"github.com/dionysia-dev/dionysia/internal/api"
 	"github.com/dionysia-dev/dionysia/internal/config"
 	"github.com/dionysia-dev/dionysia/internal/db"
+	"github.com/dionysia-dev/dionysia/internal/db/redistore"
 	"github.com/dionysia-dev/dionysia/internal/logging"
 	"github.com/dionysia-dev/dionysia/internal/queue"
 	"github.com/dionysia-dev/dionysia/internal/service"
@@ -30,6 +31,12 @@ func NewAPICmd() *cobra.Command {
 					db.New,
 					db.NewDBInputStore,
 					queue.NewClient,
+					redistore.NewClient,
+					fx.Annotate(
+						redistore.NewOriginStore,
+						fx.As(new(service.OriginStore)),
+					),
+					service.NewOriginHandler,
 					service.NewNotificationHandler,
 				),
 				api.Module,

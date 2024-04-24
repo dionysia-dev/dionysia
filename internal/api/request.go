@@ -91,3 +91,15 @@ type IngestAuthData struct {
 	Path   uuid.UUID `json:"path" validate:"required"`
 	Action string    `json:"action" validate:"required"`
 }
+
+type OriginData struct {
+	ID      uuid.UUID `json:"id" validate:"required"`
+	Address string    `json:"address" validate:"required"`
+}
+
+func (o *OriginData) ToOrigin() service.Origin {
+	return service.Origin{
+		ID:      o.ID,
+		Address: o.Address,
+	}
+}
