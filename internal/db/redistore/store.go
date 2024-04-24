@@ -43,14 +43,14 @@ func (s *OriginStore) Update(ctx context.Context, origin service.Origin) error {
 	return err
 }
 
-func (s *OriginStore) Get(ctx context.Context, uuid uuid.UUID) (service.Origin, error) {
-	address, err := s.client.Get(ctx, uuid.String()).Result()
+func (s *OriginStore) Get(ctx context.Context, id uuid.UUID) (service.Origin, error) {
+	address, err := s.client.Get(ctx, id.String()).Result()
 	if err != nil {
 		return service.Origin{}, err
 	}
 
 	return service.Origin{
-		ID:      uuid,
+		ID:      id,
 		Address: address,
 	}, nil
 }
