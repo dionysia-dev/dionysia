@@ -243,3 +243,27 @@ func (o *OriginController) UpdateOrigin(ctx *gin.Context) {
 		Message: "Origin updated successfully",
 	})
 }
+
+func (o *OriginController) GetOrigin(ctx *gin.Context) {
+	id, err := uuid.Parse(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, ErrorResponse{
+			Error: Error{Message: "BadRequest: invalid UUID format"},
+		})
+
+		return
+	}
+
+	origin, err := o.originHandler.Get(ctx, id)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error: Error{Message: "InternalServerError: failed to get origin"},
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, SuccessResponse{
+		Data: FromOrigin(origin),
+	})
+}

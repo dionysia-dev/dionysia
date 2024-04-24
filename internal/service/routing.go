@@ -18,6 +18,7 @@ type Origin struct {
 
 type OriginHandler interface {
 	Update(context.Context, Origin) error
+	Get(context.Context, uuid.UUID) (Origin, error)
 }
 
 type originHandler struct {
@@ -32,4 +33,8 @@ func NewOriginHandler(store OriginStore) OriginHandler {
 
 func (h *originHandler) Update(ctx context.Context, origin Origin) error {
 	return h.store.Update(ctx, origin)
+}
+
+func (h *originHandler) Get(ctx context.Context, id uuid.UUID) (Origin, error) {
+	return h.store.Get(ctx, id)
 }

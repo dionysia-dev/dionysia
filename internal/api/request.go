@@ -103,3 +103,10 @@ func (o *OriginData) ToOrigin() service.Origin {
 		Address: o.Address,
 	}
 }
+
+func FromOrigin(origin service.Origin) OriginData {
+	return OriginData{
+		ID:      origin.ID,
+		Address: origin.Address,
+	}
+}
