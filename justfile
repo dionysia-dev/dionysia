@@ -10,6 +10,10 @@ stop:
 test:
 	go test ./...
 
+# run test suite with integration tests
+test-all:
+	go test -tags=integration ./...
+
 # lint the code
 lint:
 	golangci-lint run -v ./...
