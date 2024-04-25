@@ -76,6 +76,12 @@ To run the test suite:
 just test
 ```
 
+Integrations test can be run with:
+
+```sh
+just test-all
+```
+
 To run code linting:
 
 ```sh
@@ -101,7 +107,6 @@ For more **advanced** contributions, please, create an issue to discuss the feat
 ## Roadmap
 
 - [ ] Video and audio transcoding (profiles)
-- [ ] Ingest authentication
 - [ ] Playback authentication
 - [ ] API authentication
 
