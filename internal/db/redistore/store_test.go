@@ -60,4 +60,18 @@ func TestOriginStoreUpdate(t *testing.T) {
 	retrieved, err := store.Get(ctx, origin.ID)
 	assert.NoError(t, err, "could not get origin")
 	assert.Equal(t, origin.Address, retrieved.Address, "retrieved origin address does not match")
+
+	// Update the origin with a different address
+	// the address should not change because the TTL keeps it active
+	newOrigin := service.Origin{
+		ID:      uuid.New(),
+		Address: "http://localhost:8081", // different address
+	}
+
+	err = store.Update(ctx, newOrigin)
+	assert.NoError(t, err, "could not update origin")
+
+	retrieved, err = store.Get(ctx, origin.ID)
+	assert.NoError(t, err, "could not get origin")
+	assert.Equal(t, origin.Address, retrieved.Address, "retrieved origin does not match the original one")
 }
