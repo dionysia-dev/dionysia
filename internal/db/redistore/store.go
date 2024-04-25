@@ -21,6 +21,11 @@ func NewOriginStore(client *redis.Client, cfg *config.Config) *OriginStore {
 	}
 }
 
+// Update updates the origin in the store with the given ttl.
+// It uses a lua script to ensure that the origin is only updated if the address (value)
+// is the same as the current one or if the origin (key) does not exist.
+// It is crucial to use a lua script to avoid other origins to overwrite the current one,
+// causing glitches in the video streaming.
 func (s *OriginStore) Update(ctx context.Context, origin service.Origin) error {
 	var updateOrigin = redis.NewScript(`
 		local key = KEYS[1]
