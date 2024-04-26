@@ -7,6 +7,7 @@ import (
 
 	"encoding/json"
 
+	"github.com/dionysia-dev/dionysia/internal/config"
 	"github.com/google/uuid"
 	"github.com/hibiken/asynq"
 )
@@ -16,16 +17,18 @@ const (
 )
 
 type StreamPayload struct {
-	ID      uuid.UUID `json:"id"`
-	Input   Input     `json:"input"`
-	Address string    `json:"address"`
+	ID          uuid.UUID `json:"id"`
+	Input       Input     `json:"input"`
+	Address     string    `json:"address"`
+	PlayoutPath string    `json:"playout_path"`
 }
 
-func NewPackageTask(id uuid.UUID, input Input) (*asynq.Task, error) {
+func NewPackageTask(id uuid.UUID, input Input, cfg *config.Config) (*asynq.Task, error) {
 	payload, err := json.Marshal(StreamPayload{
-		ID:      id,
-		Input:   input,
-		Address: "rtmp://media-server:1935",
+		ID:          id,
+		Input:       input,
+		Address:     "rtmp://media-server:1935",
+		PlayoutPath: cfg.PlayoutPath,
 	})
 	if err != nil {
 		return nil, err
@@ -44,7 +47,7 @@ func HandleStreamPackageTask(_ context.Context, t *asynq.Task) error {
 
 	cfg := NewDefaultCommandConfig()
 	builder := NewGPACCommandBuilder(cfg)
-	cmd := builder.Build(p.ID.String(), p.Address, "/tmp", p.Input)
+	cmd := builder.Build(p.ID.String(), p.Address, p.PlayoutPath, p.Input)
 
 	if err := cmd.Execute(); err != nil {
 		log.Printf("Failed to execute command: %v", err)

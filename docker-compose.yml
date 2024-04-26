@@ -53,3 +53,19 @@ services:
     command: worker
     env_file:
       - .env
+    volumes:
+      - content:/playout
+  playout:
+    container_name: playout
+    build: .
+    restart: always
+    ports:
+      - "8081:8081"
+    command: playout
+    env_file:
+      - .env
+    volumes:
+      - content:/playout
+
+volumes:
+  content:

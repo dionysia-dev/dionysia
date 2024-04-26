@@ -13,6 +13,8 @@ type Config struct {
 	MaxConcurrentTasks int           `env:"MAX_CONCURRENT_TASKS" envDefault:"10"`
 	ReadHeaderTimeout  time.Duration `env:"READ_HEADER_TIMEOUT" envDefault:"2"`
 	OriginTTL          int           `env:"ORIGIN_TTL" envDefault:"10"`
+	PlayoutPath        string        `env:"PLAYOUT_PATH" envDefault:"/tmp"`
+	PlayoutPort        string        `env:"PLAYOUT_PORT" envDefault:"8081"`
 }
 
 func New() (*Config, error) {

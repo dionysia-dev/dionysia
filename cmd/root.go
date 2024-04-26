@@ -17,6 +17,7 @@ func NewRootCmd() *cobra.Command {
 
 	root.AddCommand(NewAPICmd())
 	root.AddCommand(NewWorker())
+	root.AddCommand(NewPlayoutServer())
 
 	return root
 }

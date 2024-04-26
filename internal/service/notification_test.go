@@ -8,6 +8,7 @@ import (
 	"github.com/hibiken/asynq"
 	"go.uber.org/mock/gomock"
 
+	"github.com/dionysia-dev/dionysia/internal/config"
 	"github.com/dionysia-dev/dionysia/internal/db/model" // Make sure this is the correct import path for model
 	"github.com/dionysia-dev/dionysia/internal/mocks"
 	"github.com/dionysia-dev/dionysia/internal/service"
@@ -20,11 +21,12 @@ func TestPackageStreamSuccess(t *testing.T) {
 
 	mockClient := mocks.NewMockClient(ctrl)
 	mockStore := mocks.NewMockInputStore(ctrl)
-	handler := service.NewNotificationHandler(mockClient, mockStore)
+	cfg := &config.Config{PlayoutPath: "/tmp"}
+	handler := service.NewNotificationHandler(mockClient, mockStore, cfg)
 
 	taskID := uuid.New()
 	expectedInput := model.Input{ID: taskID, Name: "test"}
-	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"})
+	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"}, cfg)
 
 	expectedInfo := &asynq.TaskInfo{ID: "1", Queue: "default"}
 
@@ -42,11 +44,12 @@ func TestPackageStreamEnqueueFailure(t *testing.T) {
 
 	mockClient := mocks.NewMockClient(ctrl)
 	mockStore := mocks.NewMockInputStore(ctrl)
-	handler := service.NewNotificationHandler(mockClient, mockStore)
+	cfg := &config.Config{PlayoutPath: "/tmp"}
+	handler := service.NewNotificationHandler(mockClient, mockStore, cfg)
 
 	taskID := uuid.New()
 	expectedInput := model.Input{ID: taskID, Name: "test"}
-	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"})
+	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"}, cfg)
 
 	mockStore.EXPECT().GetInput(gomock.Any(), taskID).Return(expectedInput, nil).Times(1)
 	mockClient.EXPECT().Enqueue(expectedTask).Return(nil, assert.AnError).Times(1)
