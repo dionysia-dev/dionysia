@@ -60,7 +60,7 @@ func NewDefaultCommandConfig() *CommandConfig {
 		DefaultAudioProfiles: []AudioProfile{
 			{
 				Codec:   defaultAudioCodec,
-				Bitrate: 128,
+				Bitrate: 64,
 			},
 		},
 	}
