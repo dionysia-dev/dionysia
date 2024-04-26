@@ -22,7 +22,7 @@ func TestGPACCommandExecute(t *testing.T) {
 			"@@", "c=avc:b=2000k",
 			"@@", "c=aac:b=128k",
 			"@", "@1", "@2",
-			"-o", "/output/1234/index.m3u8:segdur=2:dmode=dynamic:profile=live:muxtype=ts",
+			"-o", "/output/1234/index.m3u8:segdur=3:dmode=dynamic:profile=live:muxtype=ts",
 		}
 		assert.Equal(t, expectedArgs, args)
 		return nil

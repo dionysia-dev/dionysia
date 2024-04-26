@@ -129,7 +129,7 @@ func (g *GPACCommand) Execute() error {
 		args = append(args, fmt.Sprintf("@%d", i))
 	}
 
-	args = append(args, "-o", fmt.Sprintf("%s/%s/index.m3u8:segdur=2:dmode=dynamic:profile=live:muxtype=ts", g.Output, g.ID))
+	args = append(args, "-o", fmt.Sprintf("%s/%s/index.m3u8:segdur=%d:dmode=dynamic:profile=live:muxtype=ts", g.Output, g.ID, defaultSegmentDuration))
 
 	log.Printf("Executing gpac command: %s", strings.Join(args, " "))
 
