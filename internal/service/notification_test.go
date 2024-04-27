@@ -9,7 +9,7 @@ import (
 	"go.uber.org/mock/gomock"
 
 	"github.com/dionysia-dev/dionysia/internal/config"
-	"github.com/dionysia-dev/dionysia/internal/db/model" // Make sure this is the correct import path for model
+	"github.com/dionysia-dev/dionysia/internal/db/model"
 	"github.com/dionysia-dev/dionysia/internal/mocks"
 	"github.com/dionysia-dev/dionysia/internal/service"
 	"github.com/stretchr/testify/assert"
@@ -25,8 +25,14 @@ func TestPackageStreamSuccess(t *testing.T) {
 	handler := service.NewNotificationHandler(mockClient, mockStore, cfg)
 
 	taskID := uuid.New()
-	expectedInput := model.Input{ID: taskID, Name: "test"}
-	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"}, cfg)
+	expectedInput := model.Input{ID: taskID, Name: "test", Format: "rtmp"}
+	expectedTask, _ := service.NewPackageTask(taskID, service.Input{
+		ID:            taskID,
+		Name:          "test",
+		Format:        "rtmp",
+		AudioProfiles: []service.AudioProfile{},
+		VideoProfiles: []service.VideoProfile{},
+	}, cfg)
 
 	expectedInfo := &asynq.TaskInfo{ID: "1", Queue: "default"}
 
@@ -48,8 +54,14 @@ func TestPackageStreamEnqueueFailure(t *testing.T) {
 	handler := service.NewNotificationHandler(mockClient, mockStore, cfg)
 
 	taskID := uuid.New()
-	expectedInput := model.Input{ID: taskID, Name: "test"}
-	expectedTask, _ := service.NewPackageTask(taskID, service.Input{ID: taskID, Name: "test"}, cfg)
+	expectedInput := model.Input{ID: taskID, Name: "test", Format: "rtmp"}
+	expectedTask, _ := service.NewPackageTask(taskID, service.Input{
+		ID:            taskID,
+		Name:          "test",
+		Format:        "rtmp",
+		AudioProfiles: []service.AudioProfile{},
+		VideoProfiles: []service.VideoProfile{},
+	}, cfg)
 
 	mockStore.EXPECT().GetInput(gomock.Any(), taskID).Return(expectedInput, nil).Times(1)
 	mockClient.EXPECT().Enqueue(expectedTask).Return(nil, assert.AnError).Times(1)

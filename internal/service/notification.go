@@ -29,14 +29,39 @@ func NewNotificationHandler(c queue.Client, store db.InputStore, cfg *config.Con
 }
 
 func (h *notificationHandler) PackageStream(ctx context.Context, id uuid.UUID) error {
-	input, err := h.store.GetInput(ctx, id)
+	in, err := h.store.GetInput(ctx, id)
 	if err != nil {
 		return err
 	}
 
+	audioProfiles := make([]AudioProfile, len(in.AudioProfiles))
+	for i, audio := range in.AudioProfiles { //nolint: gocritic // Can't use pointers in models
+		audioProfiles[i] = AudioProfile{
+			InputID: in.ID,
+			Codec:   audio.Codec,
+			Bitrate: audio.Bitrate,
+		}
+	}
+
+	videoProfiles := make([]VideoProfile, len(in.VideoProfiles))
+	for i, video := range in.VideoProfiles { //nolint: gocritic // Can't use pointers in models
+		videoProfiles[i] = VideoProfile{
+			InputID:        in.ID,
+			Codec:          video.Codec,
+			Bitrate:        video.Bitrate,
+			MaxKeyInterval: video.MaxKeyInterval,
+			Framerate:      video.Framerate,
+			Width:          video.Width,
+			Height:         video.Height,
+		}
+	}
+
 	t, err := NewPackageTask(id, Input{
-		ID:   input.ID,
-		Name: input.Name,
+		ID:            in.ID,
+		Name:          in.Name,
+		Format:        in.Format,
+		VideoProfiles: videoProfiles,
+		AudioProfiles: audioProfiles,
 	}, h.cfg)
 	if err != nil {
 		return err
