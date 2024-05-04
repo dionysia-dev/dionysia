@@ -1,12 +1,14 @@
 name: Coverage Report
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["Test lint and build"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
+
   workflow:
     runs-on: ubuntu-latest
     steps:
@@ -21,9 +23,6 @@ jobs:
         go-version: '1.22'
 
     - uses: extractions/setup-just@v1
-
-    - name: Install dependencies
-      run: go mod download
 
     - name: Test
       run: |
