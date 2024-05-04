@@ -14,6 +14,10 @@ test:
 test-all:
 	go test -tags=integration ./...
 
+# run test generating coverage
+test-ci:
+	go test -v ./... -covermode=count -coverprofile=coverage.out 
+
 # lint the code
 lint:
 	golangci-lint run -v ./...
